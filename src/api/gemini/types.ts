@@ -1,17 +1,16 @@
-import { GenerationConfig, SafetySetting } from '@google/generative-ai';
-import { FileData } from '../../state/chatSlice';
+import { Content, GenerationConfig, Part, SafetySetting } from '@google/generative-ai';
 
 /**
  * Defines the configuration for a request to the Gemini API client.
  * This interface is designed to be flexible and reusable, allowing for
- * various types of prompts and configurations.
+ * multi-turn conversations.
  */
 export interface GeminiRequest {
-  /** The main text prompt for the model. */
-  prompt: string;
+  /** The history of the conversation, excluding the latest user message. */
+  history: Content[];
 
-  /** Optional file data (e.g., an image) to provide as context. */
-  file?: FileData;
+  /** The latest message from the user to be sent to the model. */
+  latestUserMessage: Part[];
 
   /** Optional generation configuration for the model. */
   generationConfig?: GenerationConfig;

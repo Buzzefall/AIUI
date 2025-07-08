@@ -1,8 +1,9 @@
 import {
   GoogleGenerativeAI,
   GenerateContentResult,
-  Part,
+  Part, 
 } from '@google/generative-ai';
+import { Content } from '@google/generative-ai';
 import { GeminiRequest } from './types';
 
 /**
@@ -23,27 +24,29 @@ export class GeminiApiClient {
     this.googleAi = new GoogleGenerativeAI(apiKey);
   }
 
-  /**
-   * Generates content based on the provided prompt configuration.
-   * It supports both text-only and multimodal (text and image) prompts.
+  /** Generates content as part of a conversation.
+   * It uses the provided history to inform the model's response.
    *
    * @param config The configuration for the prompt.
    * @returns A promise that resolves with the generation result.
    */
   public async generateContent(config: GeminiRequest): Promise<GenerateContentResult> {
     const modelName = 'gemini-2.5-pro';
+    // const hasImageData = config.latestUserMessage.some(part => 'inlineData' in part);
     const model = this.googleAi.getGenerativeModel({
       model: modelName,
       generationConfig: config.generationConfig,
       safetySettings: config.safetySettings,
     });
 
-    const parts: Part[] = [{ text: config.prompt }];
+    // To debug the CORS issue, we revert to the stateless `generateContent` call,
+    // which worked previously. We can pass the entire conversation history
+    // in the `contents` array for multi-turn chat context.
+    const contents: Content[] = [
+      ...config.history, // The existing messages from previous turns
+      { role: 'user', parts: config.latestUserMessage }, // The new user message
+    ];
 
-    if (config.file) {
-      parts.push({ inlineData: { mimeType: config.file.mimeType, data: config.file.base64 } });
-    }
-
-    return model.generateContent({ contents: [{ role: 'user', parts }] });
+    return model.generateContent({ contents });
   }
 }

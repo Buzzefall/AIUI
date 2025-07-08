@@ -1,52 +1,113 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
+import { Content } from '@google/generative-ai';
 import { generateContent } from './chatThunks';
-import { RootState } from './store';
+import type { RootState } from './store';
 
-// Define a type for the file data to be stored
-export interface FileData {
-  mimeType: string;
-  base64: string;
+// --- Helper Functions ---
+
+const CHAT_HISTORY_KEY = 'gemini-chat-history';
+
+const saveStateToLocalStorage = (state: ChatState) => {
+  try {
+    const serializedState = JSON.stringify({
+      conversations: state.conversations,
+      currentConversationId: state.currentConversationId,
+    });
+    localStorage.setItem(CHAT_HISTORY_KEY, serializedState);
+  } catch (e) {
+    console.warn('Could not save chat history to local storage', e);
+  }
+};
+
+const loadStateFromLocalStorage = (): Partial<ChatState> => {
+  try {
+    const serializedState = localStorage.getItem(CHAT_HISTORY_KEY);
+    if (serializedState === null) {
+      return {};
+    }
+    return JSON.parse(serializedState);
+  } catch (e) {
+    console.warn('Could not load chat history from local storage', e);
+    return {};
+  }
+};
+
+// --- Conversation State Shape ---
+export interface Conversation {
+  id: string;
+  title: string;
+  messages: Content[];
 }
 
 // Define a type for the slice state
 interface ChatState {
-  prompt: string;
-  fileData: FileData | null;
+  conversations: Conversation[];
+  currentConversationId: string | null;
   isLoading: boolean;
-  response: string | null;
   error: string | null;
 }
 
-// Define the initial state
+// --- Initial State ---
+
 const initialState: ChatState = {
-  prompt: '',
-  fileData: null,
+  conversations: [],
+  currentConversationId: null,
   isLoading: false,
-  response: null,
   error: null,
+  ...loadStateFromLocalStorage(),
 };
+
+// --- Slice Definition ---
 
 export const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    setPrompt: (state, action: PayloadAction<string>) => {
-      state.prompt = action.payload;
+    startNewChat: (state) => {
+      const newConversation: Conversation = {
+        id: nanoid(),
+        title: 'New Chat',
+        messages: [],
+      };
+      state.conversations.unshift(newConversation);
+      state.currentConversationId = newConversation.id;
+      saveStateToLocalStorage(state);
     },
-    setFileData: (state, action: PayloadAction<FileData | null>) => {
-      state.fileData = action.payload;
+    
+    switchConversation: (state, action: PayloadAction<string>) => {
+      if (state.conversations.some((c) => c.id === action.payload)) {
+        state.currentConversationId = action.payload;
+        saveStateToLocalStorage(state);
+      }
+    },
+
+    deleteConversation: (state, action: PayloadAction<string>) => {
+      state.conversations = state.conversations.filter((c) => c.id !== action.payload);
+      if (state.currentConversationId === action.payload) {
+        state.currentConversationId = state.conversations[0]?.id || null;
+      }
+      saveStateToLocalStorage(state);
     },
   },
+  
   extraReducers: (builder) => {
     builder
       .addCase(generateContent.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.response = null;
       })
       .addCase(generateContent.fulfilled, (state, action) => {
+        const currentConvo = state.conversations.find((c) => c.id === state.currentConversationId);
+        if (currentConvo) {
+          currentConvo.messages.push(action.payload.userMessage, action.payload.modelResponse);
+          // Auto-title the conversation after the first exchange
+          if (currentConvo.messages.length === 2) {
+            const firstUserMessage = action.payload.userMessage.parts.map(p => 'text' in p ? p.text : '').join(' ');
+            currentConvo.title = firstUserMessage.substring(0, 40) + (firstUserMessage.length > 40 ? '...' : '');
+          }
+        }
         state.isLoading = false;
-        state.response = action.payload;
+        saveStateToLocalStorage(state);
       })
       .addCase(generateContent.rejected, (state, action) => {
         state.isLoading = false;
@@ -55,9 +116,16 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { setPrompt, setFileData } = chatSlice.actions;
+export const { startNewChat, switchConversation, deleteConversation } = chatSlice.actions;
 
 // Selectors
-export const selectChatState = (state: RootState) => state.chat;
+export const selectIsLoading = (state: RootState) => state.chat.isLoading;
+export const selectError = (state: RootState) => state.chat.error;
+export const selectConversations = (state: RootState) => state.chat.conversations;
+export const selectCurrentConversationId = (state: RootState) => state.chat.currentConversationId;
+
+export const selectCurrentConversation = (state: RootState) => {
+  return state.chat.conversations.find((c) => c.id === state.chat.currentConversationId) || null;
+};
 
 export default chatSlice.reducer;

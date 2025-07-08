@@ -1,31 +1,39 @@
+import { useEffect } from 'react';
 import { ApiKeyPanel } from './components/ApiKeyPanel';
+import { HistoryPanel } from './components/HistoryPanel';
 import { PromptingPanel } from './components/PromptingPanel';
 import { ResponsePanel } from './components/ResponsePanel';
+import { useAppDispatch, useAppSelector } from './state/hooks';
+import { selectCurrentConversationId, startNewChat } from './state/chatSlice';
 
 function App() {
+  const dispatch = useAppDispatch();
+  const currentConversationId = useAppSelector(selectCurrentConversationId);
+
+  // On initial load, if there's no active chat, create one.
+  useEffect(() => {
+    if (!currentConversationId) {
+      dispatch(startNewChat());
+    }
+  }, [currentConversationId, dispatch]);
+
   return (
-    <div className="flex flex-col h-screen bg-slate-50 font-sans text-slate-800">
-      {/* Main Content Area */}
-      <main className="flex-grow flex items-center justify-center">
-        <div className="flex w-full h-full max-w-screen-xl mx-auto p-6">
-          {/* Panels Container */}
-          <div className="flex-grow flex items-center justify-center">
-            <div className="flex w-full bg-white rounded-lg shadow-lg" style={{ height: '75vh' }}>
-              {/* Left: Prompting Panel */}
-              <div className="w-1/2 p-6 border-r border-slate-200 flex flex-col">
-                <PromptingPanel />
-              </div>
-
-              {/* Right: Rendering Panel */}
-              <div className="w-1/2 p-6 flex flex-col">
-                <ResponsePanel />
-              </div>
-            </div>
+    <div className="flex h-screen bg-slate-50 font-sans text-slate-800">
+      <HistoryPanel />
+      <div className="flex flex-col flex-grow h-screen">
+        {/* Main Content Area */}
+        <main className="flex-grow flex flex-col p-6 overflow-y-auto">
+          <div className="flex-grow">
+            <ResponsePanel />
           </div>
+          <div className="flex-shrink-0 pt-6">
+            <PromptingPanel />
+          </div>
+        </main>
+        <div className="flex-shrink-0">
+          <ApiKeyPanel />
         </div>
-      </main>
-
-      <ApiKeyPanel />
+      </div>
     </div>
   );
 }

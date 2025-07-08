@@ -1,2 +1,2 @@
-export * from './ApiClient';
+export * from './geminiApiClient';
 export * from './types';
