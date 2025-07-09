@@ -110,7 +110,7 @@ export function PromptingPanel() {
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
         placeholder="Enter your prompt here... For example: 'What is in this image?'"
-        className="w-full p-3 border border-slate-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary disabled:bg-slate-100"
+        className="w-full p-3 border border-slate-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary disabled:bg-slate-100 text-base"
         disabled={isLoading}
         rows={4}
         onClick={(e) => e.stopPropagation()} // Prevent form's onClick from firing

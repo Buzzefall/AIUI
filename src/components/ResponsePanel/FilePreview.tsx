@@ -44,8 +44,8 @@ export const FilePreview = ({ mimeType, data, isModel }: { mimeType: string; dat
       >
         <PdfIcon />
         <div className="text-slate-700 overflow-hidden">
-          <p className="font-bold truncate">PDF Document</p>
-          <p className="text-sm">Click for details</p>
+          <p className="text-sm font-semibold truncate">PDF Document</p>
+          <p className="text-xs">Click for details</p>
         </div>
       </div>
     );

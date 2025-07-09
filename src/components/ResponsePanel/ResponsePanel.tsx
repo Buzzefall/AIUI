@@ -24,7 +24,7 @@ const ChatMessage = ({ message }: { message: Content }) => {
   const renderPart = (part: Part, index: number) => {
     if ('text' in part) {
       return (
-        <ReactMarkdown key={index} className="prose max-w-none prose-a:text-primary hover:prose-a:text-primary-dark" remarkPlugins={[remarkGfm]}>
+        <ReactMarkdown key={index} className="prose prose-base max-w-none prose-a:text-primary hover:prose-a:text-primary-dark" remarkPlugins={[remarkGfm]}>
           {part.text}
         </ReactMarkdown>
       );

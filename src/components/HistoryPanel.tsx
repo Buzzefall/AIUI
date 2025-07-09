@@ -9,7 +9,7 @@ import {
   deleteConversation,
 } from '../state/chatSlice';
 import { useContextMenu } from '../hooks/useContextMenu';
-import { ContextMenu, MenuItem } from './ContextMenu';
+import { ContextMenu /*, MenuItem*/ } from './ContextMenu';
 import { downloadFile, formatToJson, formatToMarkdown, sanitizeFilename } from '../utils/exportUtils';
 
 const MoreOptionsIcon = () => (
@@ -48,10 +48,10 @@ export function HistoryPanel() {
                 onClick={() => !isOpen && dispatch(switchConversation(convo.id))}
                 onContextMenu={(e) => handleContextMenu(e, convo)}
                 disabled={isLoading}
-                className={`w-full text-left text-sm p-2 rounded-md flex justify-between items-center ${
+                className={`w-full text-left text-sm p-2 rounded-md flex justify-between items-center transition-colors ${
                   currentId === convo.id
                     ? 'bg-primary/20 text-primary-dark font-semibold'
-                    : 'hover:bg-slate-200'
+                    : 'text-slate-700 font-medium hover:bg-slate-200'
                 }`}
               >
                 <span className="truncate pr-2">{convo.title}</span>

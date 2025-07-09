@@ -15,7 +15,7 @@ export function ApiKeyPanel() {
       <div className="w-1/3 mx-auto bg-white rounded-2xl shadow-xl p-4 border border-slate-200/50 flex flex-col items-center gap-2">
         <label
           htmlFor="api-key"
-          className="text-lg font-semibold text-slate-600"
+          className="text-sm font-medium text-slate-600"
         >
           Gemini API Key
         </label>
@@ -25,7 +25,7 @@ export function ApiKeyPanel() {
           value={apiKey || ''}
           onChange={handleApiKeyChange}
           placeholder="Enter your API Key here"
-          className="w-3/4 p-3 text-left border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary sm:text-sm"
+          className="w-full px-3 py-2 text-center border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary sm:text-sm"
         />
         {!apiKey && <p className="text-xs text-red-500">API Key is required to make requests.</p>}
       </div>
