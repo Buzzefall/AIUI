@@ -1,15 +1,12 @@
 import {
   GoogleGenerativeAI,
-  GenerateContentResult,
-  Part, 
+  GenerateContentResult
 } from '@google/generative-ai';
 import { Content } from '@google/generative-ai';
 import { GeminiRequest } from './types';
 
 /**
  * A client for interacting with the Google Gemini API.
- * This class encapsulates the logic for making API requests,
- * making it reusable and decoupled from the UI.
  */
 export class GeminiApiClient {
   private readonly googleAi: GoogleGenerativeAI;
@@ -39,9 +36,6 @@ export class GeminiApiClient {
       safetySettings: config.safetySettings,
     });
 
-    // To debug the CORS issue, we revert to the stateless `generateContent` call,
-    // which worked previously. We can pass the entire conversation history
-    // in the `contents` array for multi-turn chat context.
     const contents: Content[] = [
       ...config.history, // The existing messages from previous turns
       { role: 'user', parts: config.latestUserMessage }, // The new user message
