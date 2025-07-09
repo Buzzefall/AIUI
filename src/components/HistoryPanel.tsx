@@ -11,14 +11,12 @@ import {
 import { useContextMenu } from '../hooks/useContextMenu';
 import { ContextMenu /*, MenuItem*/ } from './ContextMenu';
 import { downloadFile, formatToJson, formatToMarkdown, sanitizeFilename } from '../utils/exportUtils';
-
-const MoreOptionsIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-  </svg>
-);
+import { useTranslation } from '../hooks/useTranslation';
+import { LocaleSwitcher } from './LocaleSwitcher';
+import { MoreOptionsIcon } from './Icons';
 
 export function HistoryPanel() {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const conversations = useAppSelector(selectConversations);
   const currentId = useAppSelector(selectCurrentConversationId);
@@ -33,11 +31,11 @@ export function HistoryPanel() {
     <aside className="flex flex-col h-full">
       <div className="p-2 border-b border-slate-200">
         <button
-          onClick={() => dispatch(startNewChat())}
+          onClick={() => dispatch(startNewChat(t('chat.newChatTitle')))}
           disabled={isLoading}
           className="w-full bg-primary text-white py-2 px-4 rounded-md font-semibold hover:bg-primary-dark disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm"
         >
-          + New Chat
+          {t('historyPanel.newChat')}
         </button>
       </div>
       <nav className="flex-grow overflow-y-auto">
@@ -58,7 +56,7 @@ export function HistoryPanel() {
                 <button
                   onClick={(e) => { e.stopPropagation(); handleContextMenu(e, convo); }}
                   className="p-1 rounded-full hover:bg-slate-300/50 text-slate-500"
-                  title="More options"
+                  title={t('historyPanel.moreOptionsTitle')}
                 >
                   <MoreOptionsIcon />
                 </button>
@@ -73,10 +71,10 @@ export function HistoryPanel() {
         onClose={closeMenu}
         items={[
           {
-            label: 'Export',
+            label: t('historyPanel.export'),
             items: [
               {
-                label: 'as Markdown (.md)',
+                label: t('historyPanel.exportMarkdown'),
                 onClick: () => {
                   const convo = contextData as Conversation;
                   if (convo) {
@@ -87,7 +85,7 @@ export function HistoryPanel() {
                 },
               },
               {
-                label: 'as JSON (.json)',
+                label: t('historyPanel.exportJson'),
                 onClick: () => {
                   const convo = contextData as Conversation;
                   if (convo) {
@@ -101,10 +99,10 @@ export function HistoryPanel() {
           },
           { label: '---' }, // This will be rendered as a separator
           {
-            label: 'Delete',
+            label: t('historyPanel.delete'),
             onClick: () => {
               const convo = contextData as Conversation;
-              if (convo && window.confirm(`Are you sure you want to delete "${convo.title}"?`)) {
+              if (convo && window.confirm(t('historyPanel.deleteConfirm', { title: convo.title }))) {
                 dispatch(deleteConversation(convo.id));
               }
               closeMenu();
@@ -112,8 +110,9 @@ export function HistoryPanel() {
           },
         ]}
       />
-      <div className="p-2 text-xs text-center text-slate-400">
-        Chat history is saved in your browser.
+      <div className="p-2 text-xs text-center text-slate-400 space-y-2">
+        <p>{t('historyPanel.footer')}</p>
+        <LocaleSwitcher />
       </div>
     </aside>
   );

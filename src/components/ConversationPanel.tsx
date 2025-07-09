@@ -1,5 +1,5 @@
 import { HistoryPanel } from './HistoryPanel';
-import { PromptingPanel } from './PromptingPanel';
+import { PromptingPanel } from './PromptingPanel/PromptingPanel';
 import { ResponsePanel } from './ResponsePanel/ResponsePanel';
 import { Separator } from './Separator';
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "../../hooks/useTranslation";
 
 const PdfIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-slate-500 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -7,6 +8,7 @@ const PdfIcon = () => (
 );
 
 export const FilePreview = ({ mimeType, data, isModel }: { mimeType: string; data: string; isModel: boolean }) => {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
   const alignmentClass = isModel ? 'self-start' : 'self-end';
 
@@ -14,8 +16,7 @@ export const FilePreview = ({ mimeType, data, isModel }: { mimeType: string; dat
     if (mimeType.startsWith('image/')) {
       setIsExpanded(!isExpanded);
     } else {
-      // Mock action for PDFs and other non-image files
-      alert(`Inline preview for ${mimeType} files is not yet implemented.`);
+      alert(t('filePreview.unsupported', { mimeType }));
     }
   };
 
@@ -29,7 +30,7 @@ export const FilePreview = ({ mimeType, data, isModel }: { mimeType: string; dat
       >
         <img
           src={`data:${mimeType};base64,${data}`}
-          alt="User upload"
+          alt={t('filePreview.userUploadAlt')}
           className="rounded-md block w-full"
         />
       </div>
@@ -44,8 +45,8 @@ export const FilePreview = ({ mimeType, data, isModel }: { mimeType: string; dat
       >
         <PdfIcon />
         <div className="text-slate-700 overflow-hidden">
-          <p className="text-sm font-semibold truncate">PDF Document</p>
-          <p className="text-xs">Click for details</p>
+          <p className="text-sm font-semibold truncate">{t('filePreview.pdfDocument')}</p>
+          <p className="text-xs">{t('filePreview.pdfDetails')}</p>
         </div>
       </div>
     );

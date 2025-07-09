@@ -3,6 +3,7 @@ import { Content, Part } from '@google/generative-ai';
 import { GeminiApiClient } from '../api/gemini';
 import type { RootState } from './store';
 import { selectCurrentConversation } from './chatSlice';
+import { getTranslation } from '../utils/getTranslation';
 
 interface GenerateContentArgs {
   prompt: string;
@@ -32,11 +33,12 @@ export const generateContent = createAsyncThunk<
   const currentConversation = selectCurrentConversation(state);
 
   if (!settings.apiKey) {
-    return rejectWithValue('API Key is not set. Please configure it at the bottom of the page.');
+    return rejectWithValue(getTranslation('errors.apiKeyNotSet'));
+
   }
 
   if (!currentConversation) {
-    return rejectWithValue('No active conversation selected.');
+    return rejectWithValue(getTranslation('errors.noActiveConversation'));
   }
 
   try {
@@ -58,7 +60,7 @@ export const generateContent = createAsyncThunk<
 
     return { userMessage, modelResponse };
   } catch (error: any) {
-    const errorMessage = error.message || 'An unknown error occurred while contacting the Gemini API.';
+    const errorMessage = error.message || getTranslation('errors.unknownApiError');
     return rejectWithValue(errorMessage);
   }
 });

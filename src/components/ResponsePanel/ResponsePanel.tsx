@@ -6,6 +6,7 @@ import { useAppSelector } from '../../state/hooks';
 import { selectCurrentConversation, selectError, selectIsLoading } from '../../state/chatSlice';
 import { LoadingSpinner } from './LoadingSpinner';
 import { FilePreview } from './FilePreview';
+import { useTranslation } from '../../hooks/useTranslation';
 
 const ClipboardIcon = ({ copied }: { copied: boolean }) => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -18,6 +19,7 @@ const ClipboardIcon = ({ copied }: { copied: boolean }) => (
 );
 
 const ChatMessage = ({ message }: { message: Content }) => {
+  const { t } = useTranslation();
   const isModel = message.role === 'model';
   const [copied, setCopied] = useState(false);
 
@@ -56,7 +58,7 @@ const ChatMessage = ({ message }: { message: Content }) => {
           <button
             onClick={handleCopy}
             className="absolute top-2 right-2 p-1 rounded-md text-slate-400 hover:bg-slate-200 hover:text-slate-600 opacity-0 group-hover:opacity-100 transition-opacity"
-            title="Copy to clipboard"
+            title={t('responsePanel.copyToClipboard')}
           >
             <ClipboardIcon copied={copied} />
           </button>
@@ -68,6 +70,7 @@ const ChatMessage = ({ message }: { message: Content }) => {
 };
 
 export function ResponsePanel() {
+  const { t } = useTranslation();
   const currentConversation = useAppSelector(selectCurrentConversation);
   const isLoading = useAppSelector(selectIsLoading);
   const error = useAppSelector(selectError);
@@ -98,7 +101,7 @@ export function ResponsePanel() {
 
       {error && (
         <div className="text-red-600 bg-red-50 p-4 rounded-md my-4">
-          <p className="font-bold">An error occurred:</p>
+          <p className="font-bold">{t('responsePanel.errorTitle')}</p>
           <pre className="whitespace-pre-wrap text-sm">{error}</pre>
         </div>
       )}

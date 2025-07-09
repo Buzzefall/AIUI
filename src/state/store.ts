@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import settingsReducer from './settingsSlice';
 import chatReducer from './chatSlice';
+import localeReducer from './localeSlice';
 
 // We will add reducers here in the next steps
 export const store = configureStore({
   reducer: {
     settings: settingsReducer,
     chat: chatReducer,
+    locale: localeReducer,
   },
 });
 

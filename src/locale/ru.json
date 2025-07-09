@@ -1,0 +1,43 @@
+{
+  "apiKeyPanel": {
+    "label": "API-ключ Gemini",
+    "placeholder": "Введите ваш API-ключ здесь",
+    "requiredError": "Для выполнения запросов требуется API-ключ."
+  },
+  "historyPanel": {
+    "newChat": "+ Новый чат",
+    "moreOptionsTitle": "Больше опций",
+    "export": "Экспорт",
+    "exportMarkdown": "как Markdown (.md)",
+    "exportJson": "как JSON (.json)",
+    "delete": "Удалить",
+    "deleteConfirm": "Вы уверены, что хотите удалить \"{title}\"?",
+    "footer": "История чата сохраняется в вашем браузере."
+  },
+  "promptingPanel": {
+    "placeholder": "Введите ваш запрос здесь... Например: 'Что на этом изображении?'",
+    "unsupportedFile": "Поддерживаются только изображения и PDF-файлы.",
+    "dropzone": "Перетащите или нажмите, чтобы прикрепить файл",
+    "generating": "Генерация...",
+    "send": "Отправить"
+  },
+  "responsePanel": {
+    "copyToClipboard": "Копировать в буфер обмена",
+    "errorTitle": "Произошла ошибка:"
+  },
+  "filePreview": {
+    "unsupported": "Предпросмотр для файлов типа {mimeType} еще не реализован.",
+    "userUploadAlt": "Загрузка пользователя",
+    "pdfDocument": "PDF-документ",
+    "pdfDetails": "Нажмите для просмотра деталей"
+  },
+  "chat": {
+    "newChatTitle": "Новый чат"
+  },
+  "errors": {
+    "fileConversion": "Ошибка при конвертации файла в base64.",
+    "noActiveConversation": "Активный диалог не выбран.",
+    "apiKeyNotSet": "API-ключ не установлен. Пожалуйста, настройте его внизу страницы.",
+    "unknownApiError": "Произошла неизвестная ошибка при обращении к Gemini API."
+  }
+}

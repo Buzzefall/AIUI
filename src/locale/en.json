@@ -1,0 +1,43 @@
+{
+  "apiKeyPanel": {
+    "label": "Gemini API Key",
+    "placeholder": "Enter your API Key here",
+    "requiredError": "API Key is required to make requests."
+  },
+  "historyPanel": {
+    "newChat": "+ New Chat",
+    "moreOptionsTitle": "More options",
+    "export": "Export",
+    "exportMarkdown": "as Markdown (.md)",
+    "exportJson": "as JSON (.json)",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete \"{title}\"?",
+    "footer": "Chat history is saved in your browser."
+  },
+  "promptingPanel": {
+    "placeholder": "Enter your prompt here... For example: 'What is in this image?'",
+    "unsupportedFile": "Only image and PDF files are supported.",
+    "dropzone": "Drag & drop or click to attach a file",
+    "generating": "Generating...",
+    "send": "Send"
+  },
+  "responsePanel": {
+    "copyToClipboard": "Copy to clipboard",
+    "errorTitle": "An error occurred:"
+  },
+  "filePreview": {
+    "unsupported": "Inline preview for {mimeType} files is not yet implemented.",
+    "userUploadAlt": "User upload",
+    "pdfDocument": "PDF Document",
+    "pdfDetails": "Click for details"
+  },
+  "chat": {
+    "newChatTitle": "New Chat"
+  },
+  "errors": {
+    "fileConversion": "Error converting file to base64.",
+    "noActiveConversation": "No active conversation selected.",
+    "apiKeyNotSet": "API Key is not set. Please configure it at the bottom of the page.",
+    "unknownApiError": "An unknown error occurred while contacting the Gemini API."
+  }
+}

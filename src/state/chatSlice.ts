@@ -2,6 +2,7 @@ import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import { Content } from '@google/generative-ai';
 import { generateContent } from './chatThunks';
 import type { RootState } from './store';
+import { getTranslation } from '../utils/getTranslation';
 
 // --- Helper Functions ---
 
@@ -63,10 +64,10 @@ export const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    startNewChat: (state) => {
+      startNewChat: (state, action: PayloadAction<string>) => {
       const newConversation: Conversation = {
         id: nanoid(),
-        title: 'New Chat',
+        title: action.payload,
         messages: [],
       };
       state.conversations.unshift(newConversation);
