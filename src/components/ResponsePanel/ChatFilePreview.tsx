@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useTranslation } from "../../hooks/useTranslation";
+import { PdfIcon } from "../Icons"; 
 
-const PdfIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-slate-500 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-    <path fillRule="evenodd" d="M4 2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V8.414a1 1 0 00-.293-.707l-4-4A1 1 0 0011.586 3H4zm4 8a1 1 0 100 2h4a1 1 0 100-2H8z" clipRule="evenodd" />
-  </svg>
-);
+interface FilePreviewProps {
+  mimeType: string;
+  data: string;
+  isModel: boolean;
+}
 
-export const FilePreview = ({ mimeType, data, isModel }: { mimeType: string; data: string; isModel: boolean }) => {
+export const ChatFilePreview = ({ mimeType, data, isModel }: FilePreviewProps) => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
   const alignmentClass = isModel ? 'self-start' : 'self-end';

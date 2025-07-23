@@ -45,5 +45,8 @@
     "settings": "Settings",
     "locale": "Locale",
     "fullState": "Full Application State"
+  },
+  "localeSwitcher": {
+    "title": "Choose Language"
   }
 }

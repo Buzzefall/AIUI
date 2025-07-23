@@ -20,10 +20,8 @@ function App() {
   }, [currentConversationId, dispatch, t]);
 
   return (
-    <Panel orientation="vertical" className="h-screen border border-slate-100 rounded-2xl shadow-xl font-sans text-slate-800 p-4 m-16">
+    <Panel orientation="vertical" className="h-screen border border-slate-100 rounded-2xl shadow-xl font-sans text-slate-800">
       <ConversationPanel />
-      <Separator />
-      <ApiKeyPanel />
     </Panel>
   );
 }

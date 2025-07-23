@@ -40,10 +40,13 @@
     "unknownApiError": "Произошла неизвестная ошибка при обращении к Gemini API."
   },
   "exportPanel": {
-    "title": "Параметры экспорта",
+    "title": "Опции экспорта",
     "chatHistory": "История всех чатов",
     "settings": "Настройки",
     "locale": "Локализация",
     "fullState": "Полное состояние приложения"
+  },  
+  "localeSwitcher": {
+    "title": "Выбрать язык"
   }
 }

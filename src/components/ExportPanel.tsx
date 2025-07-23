@@ -38,8 +38,8 @@ export function ExportPanel() {
   };
 
   return (
-    <div className="p-2 text-xs text-center text-slate-400 space-y-2">
-      <p className="font-semibold">{t('exportPanel.title')}</p>
+    <div className="p-2 text-sm text-center space-y-2">
+      <p className="font-semibold text-normal">{t('exportPanel.title')}</p>
       <div className="flex flex-col space-y-2">
         {exportOptions.map((option, index) => (
           <button

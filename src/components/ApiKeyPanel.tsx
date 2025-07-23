@@ -14,10 +14,10 @@ export function ApiKeyPanel() {
   };
 
   return (
-    <Panel orientation='vertical'>
+    <Panel orientation='vertical' className="flex-shrink-0 m-4">
       <label
         htmlFor="api-key"
-        className="text-sm font-medium text-slate-600"
+        className="text-sm font-semibold text-slate-600"
       >
         {t('apiKeyPanel.label')}
       </label>
@@ -27,7 +27,7 @@ export function ApiKeyPanel() {
         value={apiKey || ''}
         onChange={handleApiKeyChange}
         placeholder={t('apiKeyPanel.placeholder')}
-        className="w-full px-3 py-2 text-center shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary sm:text-sm"
+        className="w-full px-3 py-2 text-center border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary sm:text-sm"
       />
       {!apiKey && <p className="text-xs text-red-500">{t('apiKeyPanel.requiredError')}</p>}
     </Panel>

@@ -1,0 +1,129 @@
+/**
+ * @file HistoryPanel.css
+ * @description Styles for the HistoryPanel component and its sub-components, following BEM methodology.
+ */
+
+/**
+ * @block history-panel
+ * @description The main container for the chat history and related controls.
+ */
+.history-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex-grow: 1;
+}
+
+/**
+ * @element history-panel__new-chat-button-container
+ * @description Container for the new chat button.
+ */
+.history-panel__new-chat-button-container {
+  padding: 0.5rem; /* p-2 */
+}
+
+/**
+ * @element history-panel__new-chat-button
+ * @description Button to start a new chat.
+ */
+.history-panel__new-chat-button {
+  width: 100%;
+  background-color: #4f46e5; /* bg-primary */
+  color: white;
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  border-radius: 0.375rem; /* rounded-md */
+  font-weight: 600;
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter; /* transition-colors */
+  transition-duration: 0.15s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.875rem; /* text-sm */
+}
+
+.history-panel__new-chat-button:hover {
+  background-color: #4338ca; /* hover:bg-primary-dark */
+}
+
+.history-panel__new-chat-button:disabled {
+  background-color: #94a3b8; /* disabled:bg-slate-400 */
+  cursor: not-allowed;
+}
+
+/**
+ * @element history-panel__conversation-list
+ * @description Navigation list for conversations.
+ */
+.history-panel__conversation-list {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+/**
+ * @element history-panel__conversation-item
+ * @description Individual list item for a conversation.
+ */
+.history-panel__conversation-item {
+  padding: 0.25rem; /* p-1 */
+}
+
+/**
+ * @element history-panel__conversation-button
+ * @description Button for selecting a conversation.
+ */
+.history-panel__conversation-button {
+  width: 100%;
+  text-align: left;
+  font-size: 0.875rem; /* text-sm */
+  padding: 0.5rem; /* p-2 */
+  border-radius: 0.375rem; /* rounded-md */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter; /* transition-colors */
+  transition-duration: 0.15s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  color: #475569; /* text-slate-700 */
+  font-weight: 500;
+}
+
+.history-panel__conversation-button:hover {
+  background-color: #e2e8f0; /* hover:bg-slate-200 */
+}
+
+.history-panel__conversation-button:disabled {
+  cursor: not-allowed;
+}
+
+/**
+ * @modifier history-panel__conversation-button--active
+ * @description Modifier for the currently active conversation button.
+ */
+.history-panel__conversation-button--active {
+  background-color: rgba(79, 70, 229, 0.2); /* bg-primary/20 */
+  color: #4338ca; /* text-primary-dark */
+  font-weight: 600;
+}
+
+/**
+ * @element history-panel__conversation-title
+ * @description The title of the conversation.
+ */
+.history-panel__conversation-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-right: 0.5rem; /* pr-2 */
+}
+
+/**
+ * @element history-panel__more-options-button
+ * @description Button to open more options for a conversation.
+ */
+.history-panel__more-options-button {
+  padding: 0.25rem; /* p-1 */
+  border-radius: 9999px; /* rounded-full */
+  color: #64748b; /* text-slate-500 */
+}
+
+.history-panel__more-options-button:hover {
+  background-color: rgba(203, 213, 225, 0.5); /* hover:bg-slate-300/50 */
+}
