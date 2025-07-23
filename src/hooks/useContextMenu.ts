@@ -29,7 +29,7 @@ export const useContextMenu = () => {
   }, [menuState.isOpen]);
 
   return {
-    ...menuState,
+    menuState,
     openMenu,
     closeMenu,
   };

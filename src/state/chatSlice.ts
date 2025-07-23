@@ -2,7 +2,6 @@ import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import { Content } from '@google/generative-ai';
 import { generateContent } from './chatThunks';
 import type { RootState } from './store';
-import { getTranslation } from '../utils/getTranslation';
 
 // --- Helper Functions ---
 

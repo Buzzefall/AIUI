@@ -1,0 +1,311 @@
+/**
+ * @file PromptingPanel.css
+ * @description Styles for the PromptingPanel component, following BEM methodology.
+ */
+
+/**
+ * @block prompting-panel
+ * @description The main container for the prompting interface.
+ */
+.prompting-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-shrink: 0;
+  margin: 1rem 3rem;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/**
+ * @element prompting-panel__form
+ * @description The form element that contains the prompting controls.
+ */
+.prompting-panel__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/**
+ * @element prompting-panel__textarea-container
+ * @description A container for the textarea and submit button, allowing for relative positioning.
+ */
+.prompting-panel__textarea-container {
+  position: relative;
+}
+
+/**
+ * @element prompting-panel__textarea
+ * @description The text input area for the user's prompt.
+ */
+.prompting-panel__textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #d1d5db; /* slate-300 */
+  border-radius: 0.5rem;
+  resize: none;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.prompting-panel__textarea:focus {
+  outline: none;
+  border-color: #4f46e5; /* primary */
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.5); /* ring-2 ring-primary/50 */
+}
+
+.prompting-panel__textarea:disabled {
+  background-color: #f3f4f6; /* slate-100 */
+}
+
+.prompting-panel__textarea:hover:not(:disabled) {
+  border-color: #4f46e5; /* primary */
+}
+
+/**
+ * @element prompting-panel__submit-button
+ * @description The button to submit the prompt.
+ */
+.prompting-panel__submit-button {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background-color: #4f46e5; /* primary */
+  color: white;
+  padding: 0.5rem;
+  border-radius: 9999px; /* rounded-full */
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.prompting-panel__submit-button:hover:not(:disabled) {
+  background-color: #4338ca; /* primary-dark */
+}
+
+.prompting-panel__submit-button:disabled {
+  background-color: #9ca3af; /* slate-400 */
+  cursor: not-allowed;
+}
+
+/**
+ * @element prompting-panel__file-upload
+ * @description A visually hidden input for file uploads.
+ */
+.prompting-panel__file-upload {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/**
+ * @element prompting-panel__file-preview-grid
+ * @description A grid container for file previews.
+ */
+.prompting-panel__file-preview-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  position: relative;
+}
+
+/**
+ * @element prompting-panel__remove-all-container
+ * @description Remove all files attached to prompt for upload. 
+ */
+.prompting-panel__remove-all-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-right: 2.25rem;
+  animation: fade-in 0.3s;
+  position: relative;
+  height: 1rem;
+  width: 1rem;
+  transition: border-color 0.2s;
+}
+
+/**
+ * @element prompting-panel__remove-all-button
+ * @description Button to remove all selected files.
+ */
+.prompting-panel__remove-all-button {
+  flex-shrink: 0;
+  padding-bottom: 0.35rem;
+  margin-left: 0.25rem;
+  background-color: #9ca3af; /* slate-400 */
+  color: white;
+  border-radius: 0.25rem; /* rounded-full */
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: xx-large;
+  transition: background-color 0.4s;
+}
+
+.prompting-panel__remove-all-button:hover {
+  background-color: #ef4444; /* red-500 */
+}
+
+/**
+ * @element prompting-panel__remove-all-icon
+ * @description Icon for the remove all files button.
+ */
+.prompting-panel__remove-all-icon {
+  flex-shrink: 0;
+  margin: 4rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/**
+ * @element prompting-panel__file-tile
+ * @description A single tile in the file preview grid.
+ */
+.prompting-panel__file-tile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background-color: #f3f4f6; /* slate-100 */
+  border-radius: 0.375rem; /* rounded-md */
+  border: 1px solid #e5e7eb; /* slate-200 */
+  animation: fade-in 0.3s;
+  position: relative;
+  width: 15rem;
+  height: 3rem;
+  transition: border-color 0.2s;
+}
+
+.prompting-panel__file-tile:hover {
+  border-color: #4f46e5; /* primary */
+}
+
+/**
+ * @element prompting-panel__file-info
+ * @description A container for the file icon and name.
+ */
+.prompting-panel__file-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+/**
+ * @element prompting-panel__file-icon
+ * @description The icon representing the file type.
+ */
+.prompting-panel__file-icon {
+  flex-shrink: 0;
+  width: 1.5rem; /* 24px */
+  height: 1.5rem; /* 24px */
+  color: #64748b; /* slate-500 */
+}
+
+/**
+ * @element prompting-panel__file-name
+ * @description The name of the selected file.
+ */
+.prompting-panel__file-name {
+  font-size: 0.875rem; /* text-sm */
+  color: #1f2937; /* slate-800 */
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/**
+ * @element prompting-panel__file-remove-button 
+ * @description A button to remove the selected file.
+ */
+.prompting-panel__file-remove-button {
+  flex-shrink: 0;
+  padding-bottom: 0.25rem;
+  margin-left: 0.25rem;
+  background-color: #9ca3af; /* slate-400 */
+  color: white;
+  border-radius: 0.25rem; /* rounded-full */
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: background-color 0.4s;
+}
+
+.prompting-panel__file-remove-button:hover {
+  background-color: #ef4444; /* red-500 */
+}
+
+/**
+ * @element prompting-panel__error
+ * @description An error message related to file uploads.
+ */
+.prompting-panel__error {
+  font-size: 0.75rem; /* text-xs */
+  color: #ef4444; /* red-500 */
+}
+
+/**
+ * @element prompting-panel__dropzone
+ * @description The area for dragging and dropping files.
+ */
+.prompting-panel__dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border: 2px dashed #d1d5db; /* border-slate-300 */
+  border-radius: 0.75rem; /* rounded-xl */
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.prompting-panel__dropzone:hover {
+  border-color: #4f46e5; /* primary */
+}
+
+/**
+ * @modifier prompting-panel__dropzone--dragging
+ * @description A modifier for when a file is being dragged over the dropzone.
+ */
+.prompting-panel__dropzone--dragging {
+  border-color: #4f46e5; /* primary */
+  background-color: rgba(79, 70, 229, 0.05); /* bg-primary/5 */
+}
+
+/**
+ * @element prompting-panel__dropzone-text
+ * @description The text inside the dropzone.
+ */
+.prompting-panel__dropzone-text {
+  color: #9ca3af; /* slate-400 */
+  font-size: 0.875rem; /* text-sm */
+  margin-top: 0.5rem;
+  transition: color 0.2s;
+}
+
+.prompting-panel__dropzone:hover .prompting-panel__dropzone-text {
+  color: #4f46e5; /* primary */
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -7,10 +7,10 @@ import { getTranslation } from '../utils/getTranslation';
 
 interface GenerateContentArgs {
   prompt: string;
-  file?: {
+  files?: {
     mimeType: string;
     base64: string;
-  };
+  }[];
 }
 
 interface GenerateContentResult {
@@ -27,7 +27,7 @@ export const generateContent = createAsyncThunk<
   GenerateContentResult,
   GenerateContentArgs,
   { state: RootState; rejectValue: string }
->('chat/generateContent', async ({ prompt, file }, { getState, rejectWithValue }) => {
+>('chat/generateContent', async ({ prompt, files }, { getState, rejectWithValue }) => {
   const state = getState();
   const { settings } = state;
   const currentConversation = selectCurrentConversation(state);
@@ -45,8 +45,10 @@ export const generateContent = createAsyncThunk<
     // For multimodal prompts, the order of parts is important.
     // The file data should come before the text prompt.
     const latestUserMessage: Part[] = [];
-    if (file) {
-      latestUserMessage.push({ inlineData: { mimeType: file.mimeType, data: file.base64 } });
+    if (files) {
+      files.forEach(file => {
+        latestUserMessage.push({ inlineData: { mimeType: file.mimeType, data: file.base64 } });
+      });
     }
     // The text part should always be present.
     latestUserMessage.push({ text: prompt });

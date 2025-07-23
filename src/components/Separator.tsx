@@ -2,7 +2,7 @@ interface SeparatorProps {
   orientation?: 'vertical' | 'horizontal';
 }
 
-export function Separator({ orientation = 'vertical' }: SeparatorProps) {
+export function Separator({ orientation = 'horizontal' }: SeparatorProps) {
   const baseClasses = 'bg-gradient-to-t from-transparent via-slate-300 to-transparent';
   const orientationClasses =
     orientation === 'vertical'

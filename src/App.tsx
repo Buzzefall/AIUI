@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from './state/hooks';
 import { selectCurrentConversationId, startNewChat } from './state/chatSlice';
 import { ConversationPanel } from './components/ConversationPanel';
 import { useTranslation } from './hooks/useTranslation';
+import { Separator } from './components/Separator';
+import { Panel } from './components/Panel';
 
 function App() {
   const { t } = useTranslation();
@@ -18,12 +20,11 @@ function App() {
   }, [currentConversationId, dispatch, t]);
 
   return (
-    <div className="flex flex-col h-screen bg-slate-100 font-sans text-slate-800">
-      <main className="flex-grow flex items-center justify-center p-4">
-        <ConversationPanel />
-      </main>
+    <Panel orientation="vertical" className="h-screen border border-slate-100 rounded-2xl shadow-xl font-sans text-slate-800 p-4 m-16">
+      <ConversationPanel />
+      <Separator />
       <ApiKeyPanel />
-    </div>
+    </Panel>
   );
 }
 

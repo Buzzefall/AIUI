@@ -1,3 +1,10 @@
+import { ExportPanel } from './ExportPanel';
+import { LocaleSwitcher } from './LocaleSwitcher';
+import { ContextMenu /*, MenuItem*/ } from './ContextMenu';
+import { MoreOptionsIcon } from './Icons';
+
+import { useContextMenu } from '../hooks/useContextMenu';
+import { useTranslation } from '../hooks/useTranslation';
 import { useAppDispatch, useAppSelector } from '../state/hooks';
 import {
   Conversation,
@@ -8,12 +15,8 @@ import {
   switchConversation,
   deleteConversation,
 } from '../state/chatSlice';
-import { useContextMenu } from '../hooks/useContextMenu';
-import { ContextMenu /*, MenuItem*/ } from './ContextMenu';
+
 import { downloadFile, formatToJson, formatToMarkdown, sanitizeFilename } from '../utils/exportUtils';
-import { useTranslation } from '../hooks/useTranslation';
-import { LocaleSwitcher } from './LocaleSwitcher';
-import { MoreOptionsIcon } from './Icons';
 
 export function HistoryPanel() {
   const { t } = useTranslation();
@@ -21,19 +24,19 @@ export function HistoryPanel() {
   const conversations = useAppSelector(selectConversations);
   const currentId = useAppSelector(selectCurrentConversationId);
   const isLoading = useAppSelector(selectIsLoading);
-  const { isOpen, position, contextData, openMenu, closeMenu } = useContextMenu();
+  const { menuState, openMenu, closeMenu } = useContextMenu(); // isOpen, position, contextData,
 
   const handleContextMenu = (e: React.MouseEvent, conversation: Conversation) => {
     openMenu(e, conversation);
   };
 
   return (
-    <aside className="flex flex-col h-full">
-      <div className="p-2 border-b border-slate-200">
+    <aside className="flex flex-col h-full w-1/6 flex-shrink-0">
+      <div className="p-2">
         <button
           onClick={() => dispatch(startNewChat(t('chat.newChatTitle')))}
           disabled={isLoading}
-          className="w-full bg-primary text-white py-2 px-4 rounded-md font-semibold hover:bg-primary-dark disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm"
+          className="w-full bg-primary text-white py-2 px-4 rounded-md font-semibold hover:bg-primary-dark disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-base"
         >
           {t('historyPanel.newChat')}
         </button>
@@ -43,7 +46,7 @@ export function HistoryPanel() {
           {conversations.map((convo) => (
             <li key={convo.id} className="p-1">
               <button
-                onClick={() => !isOpen && dispatch(switchConversation(convo.id))}
+                onClick={() => !menuState.isOpen && dispatch(switchConversation(convo.id))}
                 onContextMenu={(e) => handleContextMenu(e, convo)}
                 disabled={isLoading}
                 className={`w-full text-left text-sm p-2 rounded-md flex justify-between items-center transition-colors ${
@@ -66,8 +69,8 @@ export function HistoryPanel() {
         </ul>
       </nav>
       <ContextMenu
-        isOpen={isOpen}
-        position={position}
+        isOpen={menuState.isOpen}
+        position={menuState.position}
         onClose={closeMenu}
         items={[
           {
@@ -76,7 +79,7 @@ export function HistoryPanel() {
               {
                 label: t('historyPanel.exportMarkdown'),
                 onClick: () => {
-                  const convo = contextData as Conversation;
+                  const convo = menuState.contextData as Conversation;
                   if (convo) {
                     const content = formatToMarkdown(convo);
                     downloadFile(content, `${sanitizeFilename(convo.title)}.md`, 'text/markdown');
@@ -87,7 +90,7 @@ export function HistoryPanel() {
               {
                 label: t('historyPanel.exportJson'),
                 onClick: () => {
-                  const convo = contextData as Conversation;
+                  const convo = menuState.contextData as Conversation;
                   if (convo) {
                     const content = formatToJson(convo);
                     downloadFile(content, `${sanitizeFilename(convo.title)}.json`, 'application/json');
@@ -101,7 +104,7 @@ export function HistoryPanel() {
           {
             label: t('historyPanel.delete'),
             onClick: () => {
-              const convo = contextData as Conversation;
+              const convo = menuState.contextData as Conversation;
               if (convo && window.confirm(t('historyPanel.deleteConfirm', { title: convo.title }))) {
                 dispatch(deleteConversation(convo.id));
               }
@@ -112,6 +115,7 @@ export function HistoryPanel() {
       />
       <div className="p-2 text-xs text-center text-slate-400 space-y-2">
         <p>{t('historyPanel.footer')}</p>
+        <ExportPanel />
         <LocaleSwitcher />
       </div>
     </aside>

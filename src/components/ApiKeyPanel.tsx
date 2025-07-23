@@ -2,6 +2,7 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '../state/hooks';
 import { selectApiKey, setApiKey } from '../state/settingsSlice';
 import { useTranslation } from '../hooks/useTranslation';
+import { Panel } from './Panel';
 
 export function ApiKeyPanel() {
   const { t } = useTranslation();
@@ -13,24 +14,22 @@ export function ApiKeyPanel() {
   };
 
   return (
-    <footer className="flex-shrink-0 p-4">
-      <div className="w-1/3 mx-auto bg-white rounded-2xl shadow-xl p-4 border border-slate-200/50 flex flex-col items-center gap-2">
-        <label
-          htmlFor="api-key"
-          className="text-sm font-medium text-slate-600"
-        >
-          {t('apiKeyPanel.label')}
-        </label>
-        <input
-          id="api-key"
-          type="password"
-          value={apiKey || ''}
-          onChange={handleApiKeyChange}
-          placeholder={t('apiKeyPanel.placeholder')}
-          className="w-full px-3 py-2 text-center border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary sm:text-sm"
-        />
-        {!apiKey && <p className="text-xs text-red-500">{t('apiKeyPanel.requiredError')}</p>}
-      </div>
-    </footer>
+    <Panel orientation='vertical'>
+      <label
+        htmlFor="api-key"
+        className="text-sm font-medium text-slate-600"
+      >
+        {t('apiKeyPanel.label')}
+      </label>
+      <input
+        id="api-key"
+        type="password"
+        value={apiKey || ''}
+        onChange={handleApiKeyChange}
+        placeholder={t('apiKeyPanel.placeholder')}
+        className="w-full px-3 py-2 text-center shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary sm:text-sm"
+      />
+      {!apiKey && <p className="text-xs text-red-500">{t('apiKeyPanel.requiredError')}</p>}
+    </Panel>
   );
 }
