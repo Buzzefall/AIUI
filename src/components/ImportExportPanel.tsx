@@ -8,7 +8,7 @@ import { setSettingsState } from '../state/settingsSlice';
 import { setLocaleState } from '../state/localeSlice';
 import { Separator } from './Separator';
 
-export function ExportPanel() {
+export function ImportExportPanel() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const chatState = useAppSelector((state: RootState) => state.chat);
@@ -47,7 +47,7 @@ export function ExportPanel() {
 
   const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    
+
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
