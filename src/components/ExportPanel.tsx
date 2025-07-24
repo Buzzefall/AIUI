@@ -47,20 +47,25 @@ export function ExportPanel() {
 
   const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
         try {
           const importedData = JSON.parse(e.target?.result as string);
+
           if (importedData.chat) {
             dispatch(setChatState(importedData.chat));
           }
+
           if (importedData.settings) {
             dispatch(setSettingsState(importedData.settings));
           }
+
           if (importedData.locale) {
             dispatch(setLocaleState(importedData.locale));
           }
+          
           alert('Import successful!');
         } catch (error) {
           console.error('Error parsing imported file:', error);
@@ -74,7 +79,7 @@ export function ExportPanel() {
   return (
     <div className="p-2 text-normal text-center space-y-2">
       <Separator/>
-      
+
       <div className="flex items-center justify-center space-x-2 mb-4">
         <span className="font-semibold">{t('importPanel.title')}</span>
         <label htmlFor="toggle" className="flex items-center cursor-pointer">
