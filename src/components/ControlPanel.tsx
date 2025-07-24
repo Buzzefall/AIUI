@@ -10,7 +10,6 @@ export function ControlPanel() {
     <Panel orientation="vertical" className="w-1/6 flex-shrink-0">
       <HistoryPanel />
       <ApiKeyPanel />
-      <Separator />
       <ExportPanel />
       <Separator />
       <LocaleSwitcher />

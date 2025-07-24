@@ -14,10 +14,10 @@ export function ApiKeyPanel() {
   };
 
   return (
-    <Panel orientation='vertical' className="flex-shrink-0 m-4">
+    <Panel orientation='vertical' className="flex-shrink-0 mx-4">
       <label
         htmlFor="api-key"
-        className="text-sm font-semibold text-slate-600 text-justify"
+        className="text-sm font-semibold text-slate-600 text-center my-1"
       >
         {t('apiKeyPanel.label')}
       </label>

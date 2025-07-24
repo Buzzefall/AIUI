@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Content, Part } from '@google/generative-ai';
 import { GeminiApiClient } from '../api/gemini';
-import type { RootState } from './store';
 import { selectCurrentConversation } from './chatSlice';
-import { getTranslation } from '../utils/getTranslation';
+import { useTranslation } from '../hooks/useTranslation';
+import type { RootState } from './store';
 
 interface GenerateContentArgs {
   prompt: string;
@@ -30,15 +30,16 @@ export const generateContent = createAsyncThunk<
 >('chat/generateContent', async ({ prompt, files }, { getState, rejectWithValue }) => {
   const state = getState();
   const { settings } = state;
+  const { t } = useTranslation();
   const currentConversation = selectCurrentConversation(state);
 
   if (!settings.apiKey) {
-    return rejectWithValue(getTranslation('errors.apiKeyNotSet'));
+    return rejectWithValue(t('errors.apiKeyNotSet'));
 
   }
 
   if (!currentConversation) {
-    return rejectWithValue(getTranslation('errors.noActiveConversation'));
+    return rejectWithValue(t('errors.noActiveConversation'));
   }
 
   try {
@@ -62,7 +63,7 @@ export const generateContent = createAsyncThunk<
 
     return { userMessage, modelResponse };
   } catch (error: any) {
-    const errorMessage = error.message || getTranslation('errors.unknownApiError');
+    const errorMessage = error.message || t('errors.unknownApiError');
     return rejectWithValue(errorMessage);
   }
 });
