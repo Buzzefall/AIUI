@@ -32,7 +32,8 @@
  * @description A container for the textarea and submit button, allowing for relative positioning.
  */
 .prompting-panel__textarea-container {
-  position: relative;
+  display: flex;
+  gap: 0.5rem; /* Adds space between textarea and button */
 }
 
 /**
@@ -40,6 +41,7 @@
  * @description The text input area for the user's prompt.
  */
 .prompting-panel__textarea {
+  flex-grow: 1; /* Allows the textarea to take up available space */
   width: 100%;
   padding: 1rem;
   border: 1px solid #d1d5db; /* slate-300 */
@@ -68,14 +70,15 @@
  * @description The button to submit the prompt.
  */
 .prompting-panel__submit-button {
-  position: absolute;
-  bottom: 1rem;
-  left: 1rem;
+  flex-shrink: 0; /* Prevents the button from shrinking */
   background-color: #4f46e5; /* primary */
   color: white;
   padding: 0.5rem;
-  border-radius: 9999px; /* rounded-full */
+  margin-left: 0.5rem;
+  margin-bottom: 0.05rem;
+  border-radius: 0.5rem; /* rounded-full */
   font-weight: 600;
+  height: 16%;
   transition: background-color 0.2s;
 }
 

@@ -5,6 +5,7 @@ import { generateContent } from '../../state/chatThunks';
 import { selectApiKey } from '../../state/settingsSlice';
 import { PromptInput } from './PromptInput';
 import { FileUploadManager } from './FileUploadManager';
+import { ChevronUpIcon, ChevronDownIcon } from '../shared/Icons';
 import './PromptingPanel.css';
 
 interface ManagedFile {
@@ -22,6 +23,7 @@ export function PromptingPanel() {
   const [prompt, setPrompt] = useState('');
   const [managedFiles, setManagedFiles] = useState<ManagedFile[]>([]);
   const [fileErrors, setFileErrors] = useState<string[]>([]);
+  const [isExpanded, setIsExpanded] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleFileSelect = (newFiles: File[]) => {
@@ -77,7 +79,12 @@ export function PromptingPanel() {
   };
 
   return (
-    <div className="prompting-panel">
+    <div className={`prompting-panel ${isExpanded ? 'prompting-panel--expanded' : ''}`}>
+      <div className="prompting-panel__header">
+        <button onClick={() => setIsExpanded(!isExpanded)} className="prompting-panel__expand-button">
+          {isExpanded ? <ChevronDownIcon /> : <ChevronUpIcon />}
+        </button>
+      </div>
       <form
         ref={formRef}
         onSubmit={handleSubmit}
@@ -89,6 +96,7 @@ export function PromptingPanel() {
           apiKey={apiKey}
           formRef={formRef}
           onPromptChange={setPrompt}
+          isExpanded={isExpanded}
         />
 
         <FileUploadManager
