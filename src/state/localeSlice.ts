@@ -34,6 +34,6 @@ const localeSlice = createSlice({
   },
 });
 
-export const { setLocale } = localeSlice.actions;
+export const { setLocale, setLocaleState } = localeSlice.actions;
 export const selectLocale = (state: RootState) => state.locale.locale;
 export default localeSlice.reducer;

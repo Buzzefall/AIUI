@@ -11,7 +11,6 @@ export function ControlPanel() {
       <HistoryPanel />
       <ApiKeyPanel />
       <Separator />
-      <Separator />
       <ExportPanel />
       <Separator />
       <LocaleSwitcher />

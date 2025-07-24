@@ -121,7 +121,7 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { startNewChat, switchConversation, deleteConversation } = chatSlice.actions;
+export const { startNewChat, switchConversation, deleteConversation, setChatState } = chatSlice.actions;
 
 // Selectors
 export const selectIsLoading = (state: RootState) => state.chat.isLoading;

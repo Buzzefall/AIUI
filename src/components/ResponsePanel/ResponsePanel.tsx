@@ -35,6 +35,7 @@ export function ResponsePanel() {
         </div>
       )}
 
+      {/* Add div to constrict element? */}
       {error && (
         <div className="text-red-600 bg-red-50 p-4 rounded-md my-4">
           <p className="font-bold">{t('responsePanel.errorTitle')}</p>

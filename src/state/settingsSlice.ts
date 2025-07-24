@@ -27,7 +27,7 @@ export const settingsSlice = createSlice({
   },
 });
 
-export const { setApiKey } = settingsSlice.actions;
+export const { setApiKey, setSettingsState } = settingsSlice.actions;
 
 export const selectApiKey = (state: RootState) => state.settings.apiKey;
 
