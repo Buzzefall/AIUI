@@ -3,9 +3,9 @@ import { useAppSelector, useAppDispatch } from '../state/hooks';
 import { RootState } from '../state/store';
 import { downloadFile, formatToJson, sanitizeFilename } from '../utils/exportUtils';
 import { useTranslation } from '../hooks/useTranslation';
-import { setChatState } from '../state/chatSlice';
-import { setSettingsState } from '../state/settingsSlice';
-import { setLocaleState } from '../state/localeSlice';
+// import { setChatState } from '../state/chatSlice';
+// import { setSettingsState } from '../state/settingsSlice';
+// import { setLocaleState } from '../state/localeSlice';
 
 export function ExportPanel() {
   const { t } = useTranslation();
@@ -44,31 +44,31 @@ export function ExportPanel() {
     downloadFile(content, sanitizeFilename(filename), 'application/json');
   };
 
-  const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const importedData = JSON.parse(e.target?.result as string);
-          if (importedData.chat) {
-            dispatch(setChatState(importedData.chat));
-          }
-          if (importedData.settings) {
-            dispatch(setSettingsState(importedData.settings));
-          }
-          if (importedData.locale) {
-            dispatch(setLocaleState(importedData.locale));
-          }
-          alert('Import successful!');
-        } catch (error) {
-          console.error('Error parsing imported file:', error);
-          alert('Error importing file. Please ensure it is a valid JSON.');
-        }
-      };
-      reader.readAsText(file);
-    }
-  };
+  // const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       try {
+  //         const importedData = JSON.parse(e.target?.result as string);
+  //         if (importedData.chat) {
+  //           dispatch(setChatState(importedData.chat));
+  //         }
+  //         if (importedData.settings) {
+  //           dispatch(setSettingsState(importedData.settings));
+  //         }
+  //         if (importedData.locale) {
+  //           dispatch(setLocaleState(importedData.locale));
+  //         }
+  //         alert('Import successful!');
+  //       } catch (error) {
+  //         console.error('Error parsing imported file:', error);
+  //         alert('Error importing file. Please ensure it is a valid JSON.');
+  //       }
+  //     };
+  //     reader.readAsText(file);
+  //   }
+  // };
 
   return (
     <div className="p-2 text-normal text-center space-y-2">
@@ -106,19 +106,19 @@ export function ExportPanel() {
             </button>
           ))}
         </div>
-      ) : (
-        <div className="flex flex-col space-y-2">
-          <label htmlFor="import-file" className="w-full bg-slate-200 text-slate-800 py-1 px-2 rounded-md font-medium hover:bg-slate-300 transition-colors text-sm cursor-pointer">
-            {t('importPanel.selectFile')}
-          </label>
-          <input
-            id="import-file"
-            type="file"
-            accept="application/json"
-            className="hidden"
-            onChange={handleImport}
-          />
-        </div>
+      ) : (<div></div>
+        // <div className="flex flex-col space-y-2">
+        //   <label htmlFor="import-file" className="w-full bg-slate-200 text-slate-800 py-1 px-2 rounded-md font-medium hover:bg-slate-300 transition-colors text-sm cursor-pointer">
+        //     {t('importPanel.selectFile')}
+        //   </label>
+        //   <input
+        //     id="import-file"
+        //     type="file"
+        //     accept="application/json"
+        //     className="hidden"
+        //     onChange={handleImport}
+        //   />
+        // </div>
       )}
     </div>
   );
