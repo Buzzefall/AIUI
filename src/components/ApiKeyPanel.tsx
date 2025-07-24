@@ -17,7 +17,7 @@ export function ApiKeyPanel() {
     <Panel orientation='vertical' className="flex-shrink-0 m-4">
       <label
         htmlFor="api-key"
-        className="text-sm font-semibold text-slate-600"
+        className="text-sm font-semibold text-slate-600 text-justify"
       >
         {t('apiKeyPanel.label')}
       </label>

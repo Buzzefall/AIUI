@@ -27,6 +27,10 @@ const localeSlice = createSlice({
       state.locale = action.payload;
       localStorage.setItem('gemini-chat-locale', action.payload);
     },
+    setLocaleState: (state, action: PayloadAction<LocaleState>) => {
+      state.locale = action.payload.locale;
+      localStorage.setItem('gemini-chat-locale', action.payload.locale);
+    },
   },
 });
 

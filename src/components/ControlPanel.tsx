@@ -11,10 +11,10 @@ export function ControlPanel() {
       <HistoryPanel />
       <ApiKeyPanel />
       <Separator />
-      <LocaleSwitcher />
-      <Separator />
       <Separator />
       <ExportPanel />
+      <Separator />
+      <LocaleSwitcher />
     </Panel>
   );
 }

@@ -88,6 +88,11 @@ export const chatSlice = createSlice({
       }
       saveStateToLocalStorage(state);
     },
+    setChatState: (state, action: PayloadAction<ChatState>) => {
+      state.conversations = action.payload.conversations;
+      state.currentConversationId = action.payload.currentConversationId;
+      saveStateToLocalStorage(state);
+    },
   },
   
   extraReducers: (builder) => {

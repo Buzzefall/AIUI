@@ -46,6 +46,11 @@
     "locale": "Locale",
     "fullState": "Full Application State"
   },
+  "importPanel": {
+    "title": "Import Options",
+    "selectFile": "Select a file to import",
+    "importButton": "Import"
+  },
   "localeSwitcher": {
     "title": "Choose Language"
   }

@@ -46,6 +46,11 @@
     "locale": "Локализация",
     "fullState": "Полное состояние приложения"
   },  
+  "importPanel": {
+    "title": "Опции импорта",
+    "selectFile": "Выберите файл для импорта",
+    "importButton": "Импортировать"
+  },  
   "localeSwitcher": {
     "title": "Выбрать язык"
   }

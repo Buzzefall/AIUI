@@ -20,6 +20,10 @@ export const settingsSlice = createSlice({
       // Persist the API key to localStorage for convenience
       localStorage.setItem('gemini-api-key', action.payload);
     },
+    setSettingsState: (state, action: PayloadAction<SettingsState>) => {
+      state.apiKey = action.payload.apiKey;
+      localStorage.setItem('gemini-api-key', action.payload.apiKey || '');
+    },
   },
 });
 
