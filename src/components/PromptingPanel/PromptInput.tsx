@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
-import { SendIcon } from '../Icons';
+import { SendIcon } from '../shared/Icons';
 
 interface PromptInputProps {
   prompt: string;

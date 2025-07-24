@@ -1,8 +1,8 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../state/hooks';
-import { selectApiKey, setApiKey } from '../state/settingsSlice';
-import { useTranslation } from '../hooks/useTranslation';
-import { Panel } from './Panel';
+import { useAppDispatch, useAppSelector } from '../../state/hooks';
+import { selectApiKey, setApiKey } from '../../state/settingsSlice';
+import { useTranslation } from '../../hooks/useTranslation';
+import { Panel } from '../shared/Panel';
 
 export function ApiKeyPanel() {
   const { t } = useTranslation();

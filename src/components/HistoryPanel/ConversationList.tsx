@@ -1,7 +1,8 @@
 import React from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
-import { ContextMenu } from '../ContextMenu';
-import { MoreOptionsIcon } from '../Icons';
+import { ContextMenu } from '../shared/ContextMenu';
+import { MenuItem } from '../shared/MenuItem';
+import { MoreOptionsIcon } from '../shared/Icons';
 import { Conversation } from '../../state/chatSlice';
 
 interface ConversationListProps {
@@ -30,6 +31,30 @@ export function ConversationList({
   onExportJson,
 }: ConversationListProps) {
   const { t } = useTranslation();
+
+  const handleDelete = () => {
+    const convo = menuState.contextData as Conversation;
+    if (convo && window.confirm(t('historyPanel.deleteConfirm', { title: convo.title }))) {
+      onDeleteConversation(convo.id);
+    }
+    onCloseContextMenu();
+  };
+
+  const handleExportMarkdown = () => {
+    const convo = menuState.contextData as Conversation;
+    if (convo) {
+      onExportMarkdown(convo);
+    }
+    onCloseContextMenu();
+  };
+
+  const handleExportJson = () => {
+    const convo = menuState.contextData as Conversation;
+    if (convo) {
+      onExportJson(convo);
+    }
+    onCloseContextMenu();
+  };
 
   return (
     <nav className="history-panel__conversation-list">
@@ -62,45 +87,14 @@ export function ConversationList({
         isOpen={menuState.isOpen}
         position={menuState.position}
         onClose={onCloseContextMenu}
-        items={[
-          {
-            label: t('historyPanel.export'),
-            items: [
-              {
-                label: t('historyPanel.exportMarkdown'),
-                onClick: () => {
-                  const convo = menuState.contextData as Conversation;
-                  if (convo) {
-                    onExportMarkdown(convo);
-                  }
-                  onCloseContextMenu();
-                },
-              },
-              {
-                label: t('historyPanel.exportJson'),
-                onClick: () => {
-                  const convo = menuState.contextData as Conversation;
-                  if (convo) {
-                    onExportJson(convo);
-                  }
-                  onCloseContextMenu();
-                },
-              },
-            ],
-          },
-          { label: '---' }, // This will be rendered as a separator
-          {
-            label: t('historyPanel.delete'),
-            onClick: () => {
-              const convo = menuState.contextData as Conversation;
-              if (convo && window.confirm(t('historyPanel.deleteConfirm', { title: convo.title }))) {
-                onDeleteConversation(convo.id);
-              }
-              onCloseContextMenu();
-            },
-          },
-        ]}
-      />
+      >
+        <MenuItem label={t('historyPanel.export')}>
+          <MenuItem label={t('historyPanel.exportMarkdown')} onClick={handleExportMarkdown} />
+          <MenuItem label={t('historyPanel.exportJson')} onClick={handleExportJson} />
+        </MenuItem>
+        <MenuItem label="---" />
+        <MenuItem label={t('historyPanel.delete')} onClick={handleDelete} />
+      </ContextMenu>
     </nav>
   );
 }

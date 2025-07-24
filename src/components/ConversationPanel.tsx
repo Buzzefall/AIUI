@@ -1,7 +1,7 @@
 import { DialoguePanel } from './DialoguePanel';
-import { Separator } from './Separator';
-import { Panel } from './Panel';
-import { ControlPanel } from './ControlPanel';
+import { Separator } from './shared/Separator';
+import { Panel } from './shared/Panel';
+import { ControlPanel } from './ControlPanel/ControlPanel';
 
 export function ConversationPanel() {
   return (

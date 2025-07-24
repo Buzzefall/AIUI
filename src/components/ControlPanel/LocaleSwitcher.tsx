@@ -1,6 +1,6 @@
-import { useTranslation } from '../hooks/useTranslation';
-import { useAppDispatch, useAppSelector } from '../state/hooks';
-import { Locale, selectLocale, setLocale } from '../state/localeSlice';
+import { useTranslation } from '../../hooks/useTranslation';
+import { useAppDispatch, useAppSelector } from '../../state/hooks';
+import { Locale, selectLocale, setLocale } from '../../state/localeSlice';
 
 export const LocaleSwitcher = () => {
   const { t } = useTranslation();

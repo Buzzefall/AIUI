@@ -1,6 +1,6 @@
-import { Panel } from './Panel';
-import { HistoryPanel } from './HistoryPanel/HistoryPanel';
-import { Separator } from './Separator';
+import { Panel } from '../shared/Panel';
+import { HistoryPanel } from '../HistoryPanel/HistoryPanel';
+import { Separator } from '../shared/Separator';
 import { ImportExportPanel } from './ImportExportPanel';
 import { LocaleSwitcher } from './LocaleSwitcher';
 import { ApiKeyPanel } from './ApiKeyPanel';

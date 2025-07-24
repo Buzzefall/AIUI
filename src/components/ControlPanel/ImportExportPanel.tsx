@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../state/hooks';
-import { RootState } from '../state/store';
-import { downloadFile, formatToJson, sanitizeFilename } from '../utils/exportUtils';
-import { useTranslation } from '../hooks/useTranslation';
-import { setChatState } from '../state/chatSlice';
-import { setSettingsState } from '../state/settingsSlice';
-import { setLocaleState } from '../state/localeSlice';
-import { Separator } from './Separator';
+import { useAppSelector, useAppDispatch } from '../../state/hooks';
+import { RootState } from '../../state/store';
+import { downloadFile, formatToJson, sanitizeFilename } from '../../utils/exportUtils';
+import { useTranslation } from '../../hooks/useTranslation';
+import { setChatState } from '../../state/chatSlice';
+import { setSettingsState } from '../../state/settingsSlice';
+import { setLocaleState } from '../../state/localeSlice';
+import { Separator } from '../shared/Separator';
 
 export function ImportExportPanel() {
   const { t } = useTranslation();

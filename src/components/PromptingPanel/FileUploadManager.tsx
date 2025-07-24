@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
-import { PlusIcon, FileIcon } from '../Icons';
+import { PlusIcon, FileIcon } from '../shared/Icons';
 
 interface FileUploadManagerProps {
   isLoading: boolean;

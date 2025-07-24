@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Content } from '@google/generative-ai';
 import { useTranslation } from '../../hooks/useTranslation';
 import { ChatMessagePart } from './MessagePart';
-import { ClipboardIcon } from '../Icons';
+import { ClipboardIcon } from '../shared/Icons';
 
 interface ChatMessageProps {
   message: Content;

@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from './state/hooks';
 import { selectCurrentConversationId, startNewChat } from './state/chatSlice';
 import { ConversationPanel } from './components/ConversationPanel';
 import { useTranslation } from './hooks/useTranslation';
-import { Panel } from './components/Panel';
+import { Panel } from './components/shared/Panel';
 
 function App() {
   const { t } = useTranslation();

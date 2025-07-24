@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "../../hooks/useTranslation";
-import { PdfIcon } from "../Icons"; 
+import { PdfIcon } from "../shared/Icons"; 
 
 interface FilePreviewProps {
   mimeType: string;

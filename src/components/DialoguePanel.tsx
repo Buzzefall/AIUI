@@ -1,7 +1,7 @@
-import { Panel } from "./Panel";
+import { Panel } from "./shared/Panel";
 import { ResponsePanel } from "./ResponsePanel/ResponsePanel";
 import { PromptingPanel } from "./PromptingPanel/PromptingPanel";
-import { Separator } from "./Separator";
+import { Separator } from "./shared/Separator";
 
 export function DialoguePanel() {
     return (
