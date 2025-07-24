@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
-import { ContextMenu } from '../shared/ContextMenu';
-import { MenuItem } from '../shared/MenuItem';
+import { ContextMenu } from '../shared/ContextMenu/ContextMenu';
+import { MenuItem } from '../shared/ContextMenu/MenuItem';
 import { MoreOptionsIcon } from '../shared/Icons';
 import { Conversation } from '../../state/chatSlice';
 
