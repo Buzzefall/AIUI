@@ -49,6 +49,12 @@
   resize: none;
   font-size: 1rem;
   line-height: 1.5rem;
+  height: 6.5rem; /* Default height for approx 4 rows */
+  transition: height 0.3s ease-in-out;
+}
+
+.prompting-panel--expanded .prompting-panel__textarea {
+  height: 18rem; /* Expanded height for approx 12 rows */
 }
 
 .prompting-panel__textarea:focus {

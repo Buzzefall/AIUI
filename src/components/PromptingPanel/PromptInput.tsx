@@ -8,10 +8,9 @@ interface PromptInputProps {
   apiKey: string | null;
   formRef: React.RefObject<HTMLFormElement>;
   onPromptChange: (prompt: string) => void;
-  isExpanded: boolean;
 }
 
-export function PromptInput({ prompt, isLoading, apiKey, formRef, onPromptChange, isExpanded }: PromptInputProps) {
+export function PromptInput({ prompt, isLoading, apiKey, formRef, onPromptChange }: PromptInputProps) {
   const { t } = useTranslation();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -25,7 +24,6 @@ export function PromptInput({ prompt, isLoading, apiKey, formRef, onPromptChange
     <div className="prompting-panel__textarea-container">
       <textarea
         className="prompting-panel__textarea"
-        rows={isExpanded ? 12 : 4}
         value={prompt}
         disabled={isLoading}
         placeholder={t('promptingPanel.placeholder')}
