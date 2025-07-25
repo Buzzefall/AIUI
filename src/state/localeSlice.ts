@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-export type Locale = 'en' | 'ru';
 
 interface LocaleState {
   locale: Locale;
@@ -34,6 +33,11 @@ const localeSlice = createSlice({
   },
 });
 
+
+export type Locale = 'en' | 'ru';
+export const LocaleList: Locale[] = ['en', 'ru'];
+
 export const { setLocale, setLocaleState } = localeSlice.actions;
-export const selectLocale = (state: RootState) => state.locale.locale;
+export const selectCurrentLocale = (state: RootState) => state.locale.locale;
+
 export default localeSlice.reducer;

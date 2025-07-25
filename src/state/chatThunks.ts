@@ -1,9 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Content, Part } from '@google/generative-ai';
+
 import { GeminiApiClient } from '../api/gemini';
-import { selectCurrentConversation } from './chatSlice';
-import { useTranslation } from '../hooks/useTranslation';
+
 import type { RootState } from './store';
+import { selectCurrentLocale } from './localeSlice';
+import { selectCurrentConversation } from './chatSlice';
+import { getTranslation } from '../utils/getTranslation';
+
 
 interface GenerateContentArgs {
   prompt: string;
@@ -30,16 +34,16 @@ export const generateContent = createAsyncThunk<
 >('chat/generateContent', async ({ prompt, files }, { getState, rejectWithValue }) => {
   const state = getState();
   const { settings } = state;
-  const { t } = useTranslation();
+  const currentLocale = selectCurrentLocale(state);
   const currentConversation = selectCurrentConversation(state);
 
   if (!settings.apiKey) {
-    return rejectWithValue(t('errors.apiKeyNotSet'));
+    return rejectWithValue(getTranslation(currentLocale, 'errors.apiKeyNotSet'));
 
   }
 
   if (!currentConversation) {
-    return rejectWithValue(t('errors.noActiveConversation'));
+    return rejectWithValue(getTranslation(currentLocale, 'errors.noActiveConversation'));
   }
 
   try {
@@ -63,7 +67,7 @@ export const generateContent = createAsyncThunk<
 
     return { userMessage, modelResponse };
   } catch (error: any) {
-    const errorMessage = error.message || t('errors.unknownApiError');
+    const errorMessage = error.message || getTranslation(currentLocale, 'errors.unknownApiError');
     return rejectWithValue(errorMessage);
   }
 });

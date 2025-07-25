@@ -1,17 +1,16 @@
 import { useTranslation } from '../../hooks/useTranslation';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
-import { Locale, selectLocale, setLocale } from '../../state/localeSlice';
+import { LocaleList, selectCurrentLocale, setLocale } from '../../state/localeSlice';
 
 export const LocaleSwitcher = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const currentLocale = useAppSelector(selectLocale);
-  const locales: Locale[] = ['en', 'ru'];
+  const currentLocale = useAppSelector(selectCurrentLocale);
 
   return (
     <div className="flex justify-center items-center gap-2 my-4">
       <p className="font-semibold">{t('localeSwitcher.title')}</p>
-      {locales.map((locale) => (
+      {LocaleList.map((locale) => (
         <button
           key={locale}
           onClick={() => dispatch(setLocale(locale))}

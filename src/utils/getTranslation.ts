@@ -18,9 +18,11 @@ export const getTranslation = (locale: Locale, key: string, options?: { [key: st
 
   if (translation === undefined) {
     console.warn(`Translation key "${key}" not found for locale "${locale}".`);
+    
     // Fallback to English
     const fallbackTranslations = locales.en;
     translation = getNestedValue(fallbackTranslations, key);
+
     if (translation === undefined) {
       console.warn(`Translation key "${key}" not found in fallback locale "en".`);
       return key;
