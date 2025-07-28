@@ -1,20 +1,19 @@
-import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../state/hooks';
+import { useContextMenu } from '../../hooks/useContextMenu';
+import { useTranslation } from '../../hooks/useTranslation';
 import {
+  Conversation,
+  deleteConversation,
   selectConversations,
   selectCurrentConversationId,
   selectIsLoading,
   startNewChat,
   switchConversation,
-  deleteConversation,
-  Conversation,
 } from '../../state/chatSlice';
-import { useContextMenu } from '../../hooks/useContextMenu';
-import { useTranslation } from '../../hooks/useTranslation';
-import { NewChatButton } from './NewChatButton';
-import { ConversationList } from './ConversationList';
+import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import { downloadFile, formatToJson, formatToMarkdown, sanitizeFilename } from '../../utils/exportUtils';
+import { ConversationList } from './ConversationList';
 import './HistoryPanel.css';
+import { NewChatButton } from './NewChatButton';
 
 export function HistoryPanel() {
   const { t } = useTranslation();
