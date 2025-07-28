@@ -1,7 +1,31 @@
-/**
- * @file PromptingPanel.css
- * @description Styles for the PromptingPanel component, following BEM methodology.
- */
+/* Add new, correct styles */
+.prompting-panel__textarea-container .EasyMDEContainer {
+  flex-grow: 1;
+}
+
+.prompting-panel__textarea-container .CodeMirror {
+  border: 1px solid #d1d5db; /* slate-300 */
+  border-radius: 0.5rem;
+  height: 6.5rem; /* Default height for approx 4 rows */
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 1rem;
+  transition: height 0.3s ease-in-out;
+}
+
+.prompting-panel--expanded .prompting-panel__textarea-container .CodeMirror {
+  height: 18rem; /* Expanded height for approx 12 rows */
+}
+
+.prompting-panel__textarea-container .CodeMirror-focused {
+  outline: none;
+  border-color: #4f46e5; /* primary */
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.5); /* ring-2 ring-primary/50 */
+}
+
+.prompting-panel__textarea-container .cm-s-easymde .CodeMirror-cursor {
+  border-left: 1px solid #1f2937; /* slate-800 */
+}
 
 /**
  * @block prompting-panel
@@ -36,39 +60,8 @@
   gap: 0.5rem; /* Adds space between textarea and button */
 }
 
-/**
- * @element prompting-panel__textarea
- * @description The text input area for the user's prompt.
- */
-.prompting-panel__textarea {
-  flex-grow: 1; /* Allows the textarea to take up available space */
-  width: 100%;
-  padding: 1rem;
-  border: 1px solid #d1d5db; /* slate-300 */
-  border-radius: 0.5rem;
-  resize: none;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  height: 6.5rem; /* Default height for approx 4 rows */
-  transition: height 0.3s ease-in-out;
-}
-
-.prompting-panel--expanded .prompting-panel__textarea {
-  height: 18rem; /* Expanded height for approx 12 rows */
-}
-
-.prompting-panel__textarea:focus {
-  outline: none;
-  border-color: #4f46e5; /* primary */
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.5); /* ring-2 ring-primary/50 */
-}
-
-.prompting-panel__textarea:disabled {
-  background-color: #f3f4f6; /* slate-100 */
-}
-
-.prompting-panel__textarea:hover:not(:disabled) {
-  border-color: #4f46e5; /* primary */
+.prompting-panel__editor {
+  flex-grow: 1;
 }
 
 /**

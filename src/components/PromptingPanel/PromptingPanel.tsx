@@ -68,12 +68,12 @@ export function PromptingPanel() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!prompt.trim() || isLoading || !apiKey || !currentConversationId) return;
 
     const filesToSubmit = managedFiles.map(({ mimeType, base64 }) => ({ mimeType, base64 }));
-
     await dispatch(generateContent({ prompt, files: filesToSubmit }));
-
+    
     setPrompt('');
     resetForm();
   };
@@ -96,7 +96,6 @@ export function PromptingPanel() {
           apiKey={apiKey}
           formRef={formRef}
           onPromptChange={setPrompt}
-          isExpanded={isExpanded}
         />
 
         <FileUploadManager
