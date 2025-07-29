@@ -9,8 +9,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#2563eb', // Corresponds to Tailwind's blue-600
-        'primary-dark': '#1d4ed8', // Corresponds to Tailwind's blue-700
+        primary: '#3863f0', // Corresponds to Tailwind's blue-600
+        'primary-dark': '#284cc2', // Corresponds to Tailwind's blue-700
       },
       keyframes: {
         'fade-in': {

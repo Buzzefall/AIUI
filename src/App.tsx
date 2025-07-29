@@ -4,6 +4,8 @@ import { selectCurrentConversationId, startNewChat } from './state/chatSlice';
 import { ConversationPanel } from './components/ConversationPanel';
 import { useTranslation } from './hooks/useTranslation';
 import { Panel } from './components/shared/Panel';
+import './App.css';
+
 
 function App() {
   const { t } = useTranslation();

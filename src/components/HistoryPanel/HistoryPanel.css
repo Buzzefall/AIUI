@@ -28,7 +28,7 @@
  */
 .history-panel__new-chat-button {
   width: 100%;
-  background-color: #4f46e5; /* bg-primary */
+  background-color: var(--color-primary); /* bg-primary */
   color: white;
   padding: 0.5rem 1rem; /* py-2 px-4 */
   border-radius: 0.375rem; /* rounded-md */
@@ -40,7 +40,7 @@
 }
 
 .history-panel__new-chat-button:hover {
-  background-color: #4338ca; /* hover:bg-primary-dark */
+  background-color: var(--color-primary-dark); /* hover:bg-primary-dark */
 }
 
 .history-panel__new-chat-button:disabled {
@@ -98,8 +98,8 @@
  * @description Modifier for the currently active conversation button.
  */
 .history-panel__conversation-button--active {
-  background-color: rgba(79, 70, 229, 0.2); /* bg-primary/20 */
-  color: #4338ca; /* text-primary-dark */
+  background-color: rgba(70, 113, 255, 0.171); /* bg-primary/20 */
+  color: var(--color-primary); /* text-primary-dark */
   font-weight: 600;
 }
 

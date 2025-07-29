@@ -21,20 +21,20 @@
 .token-count-display__bar {
   flex-grow: 1;
   height: 0.5rem;
-  background-color: #e5e7eb; /* slate-200 */
+  background-color: var(--color-bg-slate); /* slate-200 */
   border-radius: 9999px;
   overflow: hidden;
 }
 
 .token-count-display__bar-fill {
   height: 100%;
-  background-color: #4f46e5; /* primary */
+  background-color: var(--color-primary); /* primary */
   border-radius: 9999px;
 }
 
 .token-count-display__bar-fill--cached {
   height: 100%;
-  background-color: #a5b4fc; /* primary-light */
+  background-color: var(--color-primary-light); /* primary-light */
   border-radius: 9999px;
 }
 

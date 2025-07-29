@@ -13,7 +13,8 @@
   --bwt-text-wt: #fff;
   --bwt-border: #e0e0e0;
   --bwt-muted: #6b7a99; */
-  --bwt-primary: #355de4;
+
+  --bwt-primary: var(--color-primary);
   --bwt-locked: #102497;
   --bwt-primary-hover: #a81b36;
   --bwt-accent: #00bcd4;
@@ -25,6 +26,7 @@
   --bwt-text-wt: #fff;
   --bwt-border: #e0e0e0;
   --bwt-muted: #6b7a99;
+  
   --bwt-radius: 10px;
   --bwt-shadow: 0 2px 12px 0 rgba(26,35,126,0.07);
   /* --bwt-font: 'Montserrat', 'Segoe UI', Arial, sans-serif; */
@@ -61,7 +63,7 @@
   font-family: var(--bwt-font);
   margin-bottom: 1rem;
   border: 1px solid var(--bwt-border);
-  background-color: var(--bwt-card-bg);
+  /* background-color: var(--bwt-card-bg); */
 }
 
 .textMarkdown th, .textMarkdown td {
@@ -71,7 +73,8 @@
 }
 
 .textMarkdown th {
-  background-color: var(--bwt-section-bg);
+  /* background-color: var(--bwt-section-bg); */
+  background-color: #e2e8f0 ; /* Tailwind's slate-200 */
   color: var(--bwt-primary);
   font-weight: 600;
 }
