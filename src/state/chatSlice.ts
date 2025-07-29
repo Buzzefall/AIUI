@@ -37,6 +37,8 @@ export interface Conversation {
   id: string;
   title: string;
   messages: Content[];
+  totalTokens: number;
+  cachedContentTokenCount: number;
 }
 
 // Define a type for the slice state
@@ -68,6 +70,8 @@ export const chatSlice = createSlice({
         id: nanoid(),
         title: action.payload,
         messages: [],
+        totalTokens: 0,
+        cachedContentTokenCount: 0
       };
       state.conversations.unshift(newConversation);
       state.currentConversationId = newConversation.id;
@@ -92,6 +96,14 @@ export const chatSlice = createSlice({
       state.conversations = action.payload.conversations;
       state.currentConversationId = action.payload.currentConversationId;
       saveStateToLocalStorage(state);
+    },
+    updateTokenCount: (state, action: PayloadAction<{ conversationId: string; totalTokens: number; cachedContentTokenCount: number }>) => {
+      const { conversationId, totalTokens, cachedContentTokenCount } = action.payload;
+      const conversation = state.conversations.find((c) => c.id === conversationId);
+      if (conversation) {
+        conversation.totalTokens = totalTokens;
+        conversation.cachedContentTokenCount = cachedContentTokenCount;
+      }
     },
   },
   
@@ -121,7 +133,7 @@ export const chatSlice = createSlice({
   },
 });
 
-export const { startNewChat, switchConversation, deleteConversation, setChatState } = chatSlice.actions;
+export const { startNewChat, switchConversation, deleteConversation, setChatState, updateTokenCount } = chatSlice.actions;
 
 // Selectors
 export const selectIsLoading = (state: RootState) => state.chat.isLoading;

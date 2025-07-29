@@ -1,0 +1,46 @@
+.token-count-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 1rem 1rem 1rem;
+}
+
+.token-count-display__bar-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.token-count-display__label {
+  font-size: 0.75rem;
+  color: #64748b; /* slate-500 */
+  font-weight: 600;
+  text-align: left;
+}
+
+.token-count-display__bar {
+  flex-grow: 1;
+  height: 0.5rem;
+  background-color: #e5e7eb; /* slate-200 */
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.token-count-display__bar-fill {
+  height: 100%;
+  background-color: #4f46e5; /* primary */
+  border-radius: 9999px;
+}
+
+.token-count-display__bar-fill--cached {
+  height: 100%;
+  background-color: #a5b4fc; /* primary-light */
+  border-radius: 9999px;
+}
+
+.token-count-display__value {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #1f2937; /* slate-800 */
+  width: 50px;
+}

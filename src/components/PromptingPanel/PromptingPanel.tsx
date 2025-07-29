@@ -1,10 +1,15 @@
 import React, { useRef, useState } from 'react';
+
+import { FileUploadManager } from './FileUploadManager';
+import { PromptInput } from './PromptInput';
+
+import { selectApiKey } from '../../state/settingsSlice';
+import { generateContent } from '../../state/chatThunks';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import { selectCurrentConversationId, selectIsLoading } from '../../state/chatSlice';
-import { generateContent } from '../../state/chatThunks';
-import { selectApiKey } from '../../state/settingsSlice';
-import { PromptInput } from './PromptInput';
-import { FileUploadManager } from './FileUploadManager';
+import { updateTokenCountThunk } from '../../state/updateTokenCountThunk';
+import { TokenCountDisplay } from '../TokenCountDisplay/TokenCountDisplay';
+
 import { ChevronUpIcon, ChevronDownIcon } from '../shared/Icons';
 import './PromptingPanel.css';
 
@@ -66,10 +71,14 @@ export function PromptingPanel() {
     }
   };
 
+  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!prompt.trim() || isLoading || !apiKey || !currentConversationId) return;
+
+    await dispatch(updateTokenCountThunk({ conversationId: currentConversationId }));
 
     const filesToSubmit = managedFiles.map(({ mimeType, base64 }) => ({ mimeType, base64 }));
     await dispatch(generateContent({ prompt, files: filesToSubmit }));
@@ -105,6 +114,8 @@ export function PromptingPanel() {
           onRemove={handleFileRemove}
           onRemoveAll={resetForm}
         />
+
+        <TokenCountDisplay />
 
         {fileErrors.map((error, index) => (
           <p key={index} className="prompting-panel__error">{error}</p>

@@ -1,6 +1,7 @@
 import {
   GoogleGenerativeAI,
-  GenerateContentResult
+  GenerateContentResult,
+  CountTokensResponse,
 } from '@google/generative-ai';
 import { Content } from '@google/generative-ai';
 import { GeminiRequest } from './types';
@@ -29,7 +30,6 @@ export class GeminiApiClient {
    */
   public async generateContent(config: GeminiRequest): Promise<GenerateContentResult> {
     const modelName = 'gemini-2.5-pro';
-    // const hasImageData = config.latestUserMessage.some(part => 'inlineData' in part);
     const model = this.googleAi.getGenerativeModel({
       model: modelName,
       generationConfig: config.generationConfig,
@@ -37,10 +37,22 @@ export class GeminiApiClient {
     });
 
     const contents: Content[] = [
-      ...config.history, // The existing messages from previous turns
-      { role: 'user', parts: config.latestUserMessage }, // The new user message
+      ...config.history,
+      { role: 'user', parts: config.latestUserMessage },
     ];
 
     return model.generateContent({ contents });
+  }
+
+  /**
+   * Counts the number of tokens in the conversation history.
+   *
+   * @param history The conversation history to count tokens for.
+   * @returns A promise that resolves with the token count result.
+   */
+  public async countTokens(history: Content[]): Promise<CountTokensResponse> {
+    const modelName = 'gemini-2.5-pro';
+    const model = this.googleAi.getGenerativeModel({ model: modelName });
+    return model.countTokens({ contents: history });
   }
 }
