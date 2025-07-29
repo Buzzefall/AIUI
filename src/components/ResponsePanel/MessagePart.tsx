@@ -3,7 +3,9 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import ReactMarkdown from 'react-markdown';
 import { Part } from '@google/generative-ai';
+
 import { ChatFilePreview } from './ChatFilePreview';
+import styles from './MessagePart.module.css';
 
 interface ChatMessagePartProps {
   part: Part;
@@ -13,7 +15,11 @@ interface ChatMessagePartProps {
 export function ChatMessagePart({ part, isModel }: ChatMessagePartProps) {
   if ('text' in part) {
     return (
-      <ReactMarkdown className="prose prose-base max-w-none prose-a:text-primary hover:prose-a:text-primary-dark" remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex]}>
+      <ReactMarkdown 
+        className={`${styles.textMarkdown} prose prose-base max-w-none prose-a:text-primary hover:prose-a:text-primary-dark`} 
+        remarkPlugins={[remarkGfm, remarkMath]} 
+        rehypePlugins={[rehypeKatex]}
+      >
         {part.text}
       </ReactMarkdown>
     );
