@@ -30,18 +30,16 @@ export function ChatMessage({ message }: ChatMessageProps) {
         {isModel ? 'G' : 'U'}
       </div>
       <div className={`relative p-4 rounded-lg max-w-2xl flex flex-col ${isModel ? 'bg-slate-100' : 'bg-primary/10'}`}>
-        {isModel && (
-          <button
-            onClick={handleCopy}
-            className="absolute top-2 right-2 p-1 rounded-md text-slate-400 hover:bg-slate-200 hover:text-slate-600 opacity-0 group-hover:opacity-100 transition-opacity"
-            title={t('responsePanel.copyToClipboard')}
-          >
-            <ClipboardIcon copied={copied} />
-          </button>
-        )}
         {message.parts.map((part, index) => (
           <ChatMessagePart key={index} part={part} isModel={isModel} />
         ))}
+        <button
+            className="absolute bottom-2 right-2 p-1 rounded-md text-slate-400 hover:bg-slate-200 hover:text-slate-600 opacity-0 group-hover:opacity-100 transition-opacity"
+            title={t('responsePanel.copyToClipboard')}
+            onClick={handleCopy}
+          >
+            <ClipboardIcon copied={copied} />
+        </button>
       </div>
     </div>
   );
