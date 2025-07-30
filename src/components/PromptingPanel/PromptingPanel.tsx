@@ -52,9 +52,9 @@ export function PromptingPanel() {
   };
 
   return (
-    <div className={"prompting-panel"}>
-      <div className="prompting-panel__header">
-      </div>
+    <div className="prompting-panel">
+      {/* <div className="prompting-panel__header">
+      </div> */}
       <form
         ref={formRef}
         onSubmit={handleSubmit}
@@ -68,14 +68,14 @@ export function PromptingPanel() {
           onPromptChange={(newPrompt) => dispatch(setPrompt(newPrompt))}
         />
 
-        <FileUploadManager
-          ref={fileUploadManagerRef}
-          isLoading={isLoading}
-          onFilesChange={handleFilesChange}
-        />
-
-        <TokenCountDisplay />
       </form>
+      <FileUploadManager
+        ref={fileUploadManagerRef}
+        isLoading={isLoading}
+        onFilesChange={handleFilesChange}
+      />
+
+      <TokenCountDisplay />
     </div>
   );
 }
