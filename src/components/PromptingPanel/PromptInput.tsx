@@ -1,8 +1,8 @@
 import React, { useMemo, useRef, useEffect } from 'react';
+
 import SimpleMdeEditor from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 
-import { SendIcon } from '../shared/Icons';
 import { useTranslation } from '../../hooks/useTranslation';
 
 interface PromptInputProps {
@@ -21,23 +21,35 @@ export function PromptInput({ prompt, isLoading, apiKey, formRef, onPromptChange
     return {
       autofocus: true,
       placeholder: t('promptingPanel.placeholder'),
-      toolbar: false,
-      status: false,
+      // toolbar: false,
+      // status: true,
       spellChecker: false,
+      // lineNumbers: true,
+      
+      autoDownloadFontAwesome: true,
+      sideBySideFullscreen: true,
+      renderingConfig: {
+        codeSyntaxHighlighting: true
+      },
     };
   }, [t]);
 
-  useEffect(() => {
-    if (editorContainerRef.current) {
-      const codeMirrorScroll = editorContainerRef.current.querySelector('.CodeMirror-scroll') as HTMLElement;
-      if (codeMirrorScroll) {
-        codeMirrorScroll.style.height = 'auto';
-        codeMirrorScroll.style.height = `${codeMirrorScroll.scrollHeight}px`;
-      }
-    }
-  }, [prompt]);
+  // useEffect(() => {
+  //   if (editorContainerRef.current) {
+  //     const codeMirrorScroll = editorContainerRef.current.querySelector('.CodeMirror-scroll') as HTMLElement;
+
+  //     if (codeMirrorScroll) {
+  //       codeMirrorScroll.style.height = 'auto';
+  //       codeMirrorScroll.style.height = `${codeMirrorScroll.scrollHeight}px`;
+  //     }
+  //   }
+  // }, [prompt]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (isLoading || !prompt.trim() || !apiKey) {
+      return;
+    }
+
     if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
       formRef.current?.requestSubmit();
     }
@@ -45,6 +57,9 @@ export function PromptInput({ prompt, isLoading, apiKey, formRef, onPromptChange
 
   return (
     <div className="prompting-panel__textarea-container" ref={editorContainerRef}>
+      {/* <button type="submit" className="prompting-panel__submit-button" disabled={isLoading || !prompt.trim() || !apiKey}>
+        <SendIcon />
+      </button> */}
       <SimpleMdeEditor
         className='prompting-panel__editor'
         value={prompt}
@@ -52,9 +67,6 @@ export function PromptInput({ prompt, isLoading, apiKey, formRef, onPromptChange
         onChange={onPromptChange}
         onKeyDown={handleKeyDown}
       />
-      <button type="submit" className="prompting-panel__submit-button" disabled={isLoading || !prompt.trim() || !apiKey}>
-        <SendIcon />
-      </button>
     </div>
   );
 }

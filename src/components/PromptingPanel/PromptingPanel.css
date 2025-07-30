@@ -1,27 +1,41 @@
 /* Add new, correct styles */
 .prompting-panel__textarea-container .EasyMDEContainer {
   flex-grow: 1;
+  /* border: 1px solid #d1d5db; slate-300 */
+  /* border-radius: var(--border-radius); */
 }
 
-.prompting-panel__textarea-container .CodeMirror {
-  border: 1px solid #d1d5db; /* slate-300 */
-  border-radius: var(--border-radius);
+.prompting-panel__textarea-container .EasyMDEContainer {
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
   font-size: 1.05rem;
   line-height: 1.5rem;
   padding: 0.5rem;
+  height: auto;
 }
 
+.prompting-panel__textarea-container .CodeMirror {
+  /* border: 1px solid #d1d5db; */
+  border: none;
+  font-size: 1.05rem;
+  line-height: 1.5rem;
+  padding: 0.5rem;
+  height: auto;
+}
+
+
 .prompting-panel__textarea-container .CodeMirror-scroll {
-  min-height: 6.5rem; /* Default height for approx 3-4 rows */
-  max-height: 15rem; /* Expanded height for approx 12 rows */
+  min-height: 4.5rem; /* Approx 3 lines + padding */
+  max-height: 15rem; /* Approx 10 lines + padding */
   overflow-y: auto;
 }
 
-.prompting-panel__textarea-container .CodeMirror-focused {
+/* .prompting-panel__textarea-container .CodeMirror-focused {
   outline: none;
-  border-color: #4f46e5; /* primary */
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.5); /* ring-2 ring-primary/50 */
-}
+  border-color: var(--color-primary); 
+  box-shadow: 0 0 2px 0px var(--color-primary); 
+} */
+/* ring-2 ring-primary/50 */
 
 .prompting-panel__textarea-container .cm-s-easymde .CodeMirror-cursor {
   border-left: 1px solid #1f2937; /* slate-800 */
@@ -67,6 +81,7 @@
 /**
  * @element prompting-panel__submit-button
  * @description The button to submit the prompt.
+ DEPRECATED
  */
 .prompting-panel__submit-button {
   flex-shrink: 0; /* Prevents the button from shrinking */

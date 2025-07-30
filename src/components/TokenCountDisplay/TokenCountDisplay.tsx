@@ -41,7 +41,7 @@ export function TokenCountDisplay() {
         <span className="token-count-display__value">{maxTokens}</span>
       </div>
       <div className="token-count-display__bar-container">
-        <span className="token-count-display__label">{t('tokenCount.historyTokensCached')} </span>
+        <span className="token-count-display__label">{t('tokenCount.historyTokensCached')}</span>
         <span className="token-count-display__label">{cachedTokens}</span>
         <div className="token-count-display__bar">
           <div
