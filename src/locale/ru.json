@@ -53,5 +53,9 @@
   },  
   "localeSwitcher": {
     "title": "Выбрать язык"
+  },
+  "tokenCount": {
+    "historyTokens": "Токенов в истории:",
+    "historyTokensCached": "Токенов в истории (кэш):"
   }
 }

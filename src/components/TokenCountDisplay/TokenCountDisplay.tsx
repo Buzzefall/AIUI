@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import { selectCurrentConversation } from '../../state/chatSlice';
 import { updateTokenCountThunk } from '../../state/updateTokenCountThunk';
+import { useTranslation } from '../../hooks/useTranslation';
 import './TokenCountDisplay.css';
 
 export function TokenCountDisplay() {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const currentConversation = useAppSelector(selectCurrentConversation);
 
@@ -28,7 +30,7 @@ export function TokenCountDisplay() {
   return (
     <div className="token-count-display">
       <div className="token-count-display__bar-container">
-        <span className="token-count-display__label">History tokens: </span>
+        <span className="token-count-display__label">{t('tokenCount.historyTokens')} </span>
         <span className="token-count-display__label">{tokens}</span>
         <div className="token-count-display__bar">
           <div
@@ -39,7 +41,7 @@ export function TokenCountDisplay() {
         <span className="token-count-display__value">{maxTokens}</span>
       </div>
       <div className="token-count-display__bar-container">
-        <span className="token-count-display__label">History tokens (cached): </span>
+        <span className="token-count-display__label">{t('tokenCount.historyTokensCached')} </span>
         <span className="token-count-display__label">{cachedTokens}</span>
         <div className="token-count-display__bar">
           <div

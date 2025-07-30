@@ -53,5 +53,9 @@
   },
   "localeSwitcher": {
     "title": "Choose Language"
+  },
+  "tokenCount": {
+    "historyTokens": "History tokens:",
+    "historyTokensCached": "History tokens (cached):"
   }
 }
