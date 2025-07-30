@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef, useEffect } from 'react';
 import SimpleMdeEditor from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 
@@ -15,6 +15,7 @@ interface PromptInputProps {
 
 export function PromptInput({ prompt, isLoading, apiKey, formRef, onPromptChange }: PromptInputProps) {
   const { t } = useTranslation();
+  const editorContainerRef = useRef<HTMLDivElement>(null);
 
   const editorOptions = useMemo(() => {
     return {
@@ -23,30 +24,27 @@ export function PromptInput({ prompt, isLoading, apiKey, formRef, onPromptChange
       toolbar: false,
       status: false,
       spellChecker: false,
-      // shortcuts: {
-      //   "submit": "Ctrl-Enter", // This is the key for the action
-      // },
-
-      // Override the default "submit" action
-      // Define extraKeys for CodeMirror to handle shortcuts
-      // extraKeys: {
-      //   'Ctrl-Enter': () => {
-      //     console.log('Ctrl-Enter shortcut triggered!');
-      //     formRef.current?.requestSubmit();
-      //   },
-      // },
     };
-  }, [t, formRef]);
+  }, [t]);
+
+  useEffect(() => {
+    if (editorContainerRef.current) {
+      const codeMirrorScroll = editorContainerRef.current.querySelector('.CodeMirror-scroll') as HTMLElement;
+      if (codeMirrorScroll) {
+        codeMirrorScroll.style.height = 'auto';
+        codeMirrorScroll.style.height = `${codeMirrorScroll.scrollHeight}px`;
+      }
+    }
+  }, [prompt]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
-      console.log('Ctrl-Enter or Cmd-Enter triggered!');
       formRef.current?.requestSubmit();
     }
   };
 
   return (
-    <div className="prompting-panel__textarea-container">
+    <div className="prompting-panel__textarea-container" ref={editorContainerRef}>
       <SimpleMdeEditor
         className='prompting-panel__editor'
         value={prompt}

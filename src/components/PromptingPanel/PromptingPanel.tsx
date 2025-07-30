@@ -1,24 +1,23 @@
 import React, { useRef, useState } from 'react';
 
-import { FileUploadManager } from './FileUploadManager';
+// Import the refactored component and its types
+import { FileUploadManager, ManagedFile, FileUploadManagerRef } from './FileUploadManager';
 import { PromptInput } from './PromptInput';
 
-import { selectApiKey } from '../../state/settingsSlice';
-import { generateContent as generateContentThunk } from '../../state/chatThunks';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
-import { selectCurrentConversationId, selectIsLoading } from '../../state/chatSlice';
+
 import { updateTokenCountThunk } from '../../state/updateTokenCountThunk';
+import { generateContent as generateContentThunk } from '../../state/chatThunks';
+
+import { selectApiKey } from '../../state/settingsSlice';
+import { selectPrompt, setPrompt } from '../../state/promptSlice';
+import { selectCurrentConversationId, selectIsLoading } from '../../state/chatSlice';
+
 import { TokenCountDisplay } from '../TokenCountDisplay/TokenCountDisplay';
 
-import { ChevronUpIcon, ChevronDownIcon } from '../shared/Icons';
 import './PromptingPanel.css';
-import { selectPrompt, setPrompt } from '../../state/promptSlice';
 
-interface ManagedFile {
-  file: File;
-  base64: string;
-  mimeType: string;
-}
+// The ManagedFile interface is now imported from FileUploadManager
 
 export function PromptingPanel() {
   const dispatch = useAppDispatch();
@@ -26,53 +25,16 @@ export function PromptingPanel() {
   const apiKey = useAppSelector(selectApiKey);
   const currentConversationId = useAppSelector(selectCurrentConversationId);
   const prompt = useAppSelector(selectPrompt);
-
-  const [managedFiles, setManagedFiles] = useState<ManagedFile[]>([]);
-  const [fileErrors, setFileErrors] = useState<string[]>([]);
-  const [isExpanded, setIsExpanded] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleFileSelect = (newFiles: File[]) => {
-    const filePromises = newFiles.map(file => {
-      return new Promise<ManagedFile | null>((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          resolve({
-            file,
-            mimeType: file.type,
-            base64: (reader.result as string).split(',')[1],
-          });
-        };
-        reader.onerror = () => {
-          setFileErrors(prev => [...prev, `Error reading file: ${file.name}`]);
-          resolve(null);
-        };
-        reader.readAsDataURL(file);
-      });
-    });
-
-    Promise.all(filePromises).then(results => {
-      const newManagedFiles = results.filter((result): result is ManagedFile => result !== null);
-      setManagedFiles(prev => [...prev, ...newManagedFiles]);
-    });
+  // State to hold the files, updated by the child component
+  const [managedFiles, setManagedFiles] = useState<ManagedFile[]>([]);
+  // Create a ref for the FileUploadManager component
+  const fileUploadManagerRef = useRef<FileUploadManagerRef>(null);
+  // The handleFilesChange callback updates the parent's state
+  const handleFilesChange = (files: ManagedFile[]) => {
+    setManagedFiles(files);
   };
-
-  const handleFileRemove = (fileToRemove: File) => {
-    setManagedFiles(prev => prev.filter(mf => mf.file !== fileToRemove));
-  };
-
-  const resetForm = () => {
-    setManagedFiles([]);
-    setFileErrors([]);
-
-    const fileInput = document.getElementById('file-upload') as HTMLInputElement;
-    
-    if (fileInput) {
-      fileInput.value = '';
-    }
-  };
-
-  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,15 +46,14 @@ export function PromptingPanel() {
     await dispatch(updateTokenCountThunk({ conversationId: currentConversationId }));
     
     dispatch(setPrompt(''));
-    resetForm();
+
+    // Call the reset method on the child component
+    fileUploadManagerRef.current?.reset();
   };
 
   return (
-    <div className={`prompting-panel ${isExpanded ? 'prompting-panel--expanded' : ''}`}>
+    <div className={"prompting-panel"}>
       <div className="prompting-panel__header">
-        <button onClick={() => setIsExpanded(!isExpanded)} className="prompting-panel__expand-button">
-          {isExpanded ? <ChevronDownIcon /> : <ChevronUpIcon />}
-        </button>
       </div>
       <form
         ref={formRef}
@@ -108,18 +69,12 @@ export function PromptingPanel() {
         />
 
         <FileUploadManager
+          ref={fileUploadManagerRef}
           isLoading={isLoading}
-          selectedFiles={managedFiles.map(mf => mf.file)}
-          onFileSelect={handleFileSelect}
-          onRemove={handleFileRemove}
-          onRemoveAll={resetForm}
+          onFilesChange={handleFilesChange}
         />
 
         <TokenCountDisplay />
-
-        {fileErrors.map((error, index) => (
-          <p key={index} className="prompting-panel__error">{error}</p>
-        ))}
       </form>
     </div>
   );

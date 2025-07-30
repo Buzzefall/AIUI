@@ -5,7 +5,7 @@ import { Separator } from "./shared/Separator";
 
 export function DialoguePanel() {
     return (
-        <Panel orientation="vertical" className="flex-grow h-full p-4">
+        <Panel orientation="vertical" className="flex-grow h-full p-4 overflow-hidden">
             <ResponsePanel />
             <Separator />
             <PromptingPanel />

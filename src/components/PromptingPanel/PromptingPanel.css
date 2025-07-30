@@ -5,16 +5,16 @@
 
 .prompting-panel__textarea-container .CodeMirror {
   border: 1px solid #d1d5db; /* slate-300 */
-  border-radius: 0.5rem;
-  height: 6.5rem; /* Default height for approx 4 rows */
-  font-size: 1rem;
+  border-radius: var(--border-radius);
+  font-size: 1.05rem;
   line-height: 1.5rem;
-  padding: 1rem;
-  transition: height 0.3s ease-in-out;
+  padding: 0.5rem;
 }
 
-.prompting-panel--expanded .prompting-panel__textarea-container .CodeMirror {
-  height: 18rem; /* Expanded height for approx 12 rows */
+.prompting-panel__textarea-container .CodeMirror-scroll {
+  min-height: 6.5rem; /* Default height for approx 3-4 rows */
+  max-height: 15rem; /* Expanded height for approx 12 rows */
+  overflow-y: auto;
 }
 
 .prompting-panel__textarea-container .CodeMirror-focused {
@@ -36,9 +36,8 @@
   flex-direction: column;
   gap: 1rem;
   flex-shrink: 0;
-  margin: 1rem 3rem;
-  max-width: 100%;
-  overflow-x: hidden;
+  margin: 1rem 0;
+  width: 100%;
 }
 
 /**
@@ -57,11 +56,12 @@
  */
 .prompting-panel__textarea-container {
   display: flex;
-  gap: 0.5rem; /* Adds space between textarea and button */
+  gap: 0.5rem; /* Adds space between textarea and button */;
 }
 
 .prompting-panel__editor {
   flex-grow: 1;
+  max-width: 100%;
 }
 
 /**
@@ -274,7 +274,7 @@
   justify-content: center;
   padding: 1rem;
   border: 2px dashed #d1d5db; /* border-slate-300 */
-  border-radius: 0.75rem; /* rounded-xl */
+  border-radius: var(--border-radius); /* rounded-xl */
   cursor: pointer;
   transition: border-color 0.2s;
 }
