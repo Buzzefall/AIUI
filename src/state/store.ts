@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import settingsReducer from './settingsSlice';
 import chatReducer from './chatSlice';
 import localeReducer from './localeSlice';
+import promptReducer from './promptSlice';
 
 // We will add reducers here in the next steps
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
     settings: settingsReducer,
     chat: chatReducer,
     locale: localeReducer,
+    prompt: promptReducer,
   },
 });
 

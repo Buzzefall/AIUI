@@ -17,7 +17,7 @@
   --bwt-primary: var(--color-primary);
   --bwt-locked: #102497;
   --bwt-primary-hover: #a81b36;
-  --bwt-accent: #00bcd4;
+  --bwt-accent: #6f3fdd;
   /* --bwt-bg: #fff; */
   --bwt-section-bg: #f5f5f5;
   --bwt-card-bg: #fff;
@@ -48,8 +48,7 @@
 
 .textMarkdown a {
   color: var(--bwt-accent);
-  text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .textMarkdown a:hover {

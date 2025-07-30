@@ -4,7 +4,7 @@ import { FileUploadManager } from './FileUploadManager';
 import { PromptInput } from './PromptInput';
 
 import { selectApiKey } from '../../state/settingsSlice';
-import { generateContent } from '../../state/chatThunks';
+import { generateContent as generateContentThunk } from '../../state/chatThunks';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import { selectCurrentConversationId, selectIsLoading } from '../../state/chatSlice';
 import { updateTokenCountThunk } from '../../state/updateTokenCountThunk';
@@ -12,6 +12,7 @@ import { TokenCountDisplay } from '../TokenCountDisplay/TokenCountDisplay';
 
 import { ChevronUpIcon, ChevronDownIcon } from '../shared/Icons';
 import './PromptingPanel.css';
+import { selectPrompt, setPrompt } from '../../state/promptSlice';
 
 interface ManagedFile {
   file: File;
@@ -24,8 +25,8 @@ export function PromptingPanel() {
   const isLoading = useAppSelector(selectIsLoading);
   const apiKey = useAppSelector(selectApiKey);
   const currentConversationId = useAppSelector(selectCurrentConversationId);
+  const prompt = useAppSelector(selectPrompt);
 
-  const [prompt, setPrompt] = useState('');
   const [managedFiles, setManagedFiles] = useState<ManagedFile[]>([]);
   const [fileErrors, setFileErrors] = useState<string[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -78,12 +79,11 @@ export function PromptingPanel() {
 
     if (!prompt.trim() || isLoading || !apiKey || !currentConversationId) return;
 
-    await dispatch(updateTokenCountThunk({ conversationId: currentConversationId }));
-
     const filesToSubmit = managedFiles.map(({ mimeType, base64 }) => ({ mimeType, base64 }));
-    await dispatch(generateContent({ prompt, files: filesToSubmit }));
+    await dispatch(generateContentThunk({ prompt, files: filesToSubmit }));
+    await dispatch(updateTokenCountThunk({ conversationId: currentConversationId }));
     
-    setPrompt('');
+    dispatch(setPrompt(''));
     resetForm();
   };
 
@@ -104,7 +104,7 @@ export function PromptingPanel() {
           isLoading={isLoading}
           apiKey={apiKey}
           formRef={formRef}
-          onPromptChange={setPrompt}
+          onPromptChange={(newPrompt) => dispatch(setPrompt(newPrompt))}
         />
 
         <FileUploadManager

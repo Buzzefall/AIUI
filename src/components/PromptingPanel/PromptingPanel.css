@@ -70,7 +70,7 @@
  */
 .prompting-panel__submit-button {
   flex-shrink: 0; /* Prevents the button from shrinking */
-  background-color: #4f46e5; /* primary */
+  background-color: var(--color-primary); /* primary */
   color: white;
   padding: 0.5rem;
   margin-left: 0.5rem;
