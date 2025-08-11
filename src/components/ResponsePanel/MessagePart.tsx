@@ -2,7 +2,7 @@ import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import ReactMarkdown from 'react-markdown';
-import { Part } from '@google/generative-ai';
+import { Part } from '@google/genai';
 
 import { ChatFilePreview } from './ChatFilePreview';
 import styles from './MessagePart.module.css';
@@ -26,7 +26,7 @@ export function ChatMessagePart({ part, isModel }: ChatMessagePartProps) {
   }
 
   if ('inlineData' in part && part.inlineData) {
-    return <ChatFilePreview mimeType={part.inlineData.mimeType} data={part.inlineData.data} isModel={isModel} />;
+    return <ChatFilePreview mimeType={part.inlineData.mimeType ?? ''} data={part.inlineData.data ?? ''} isModel={isModel} />;
   }
   
   return null;

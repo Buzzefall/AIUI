@@ -1,4 +1,4 @@
-import { Content, GenerationConfig, Part, SafetySetting } from '@google/generative-ai';
+import { Content, GenerationConfig, Part, ThinkingConfig } from '@google/genai';
 
 /**
  * Defines the configuration for a request to the Gemini API client.
@@ -15,6 +15,6 @@ export interface GeminiRequest {
   /** Optional generation configuration for the model. */
   generationConfig?: GenerationConfig;
 
-  /** Optional safety settings for the request. */
-  safetySettings?: SafetySetting[];
+  /** Optional thinking configuration for the model. */
+  thinkingConfig?: ThinkingConfig;
 }

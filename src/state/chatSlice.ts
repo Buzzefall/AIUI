@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
-import { Content } from '@google/generative-ai';
+import { Content } from '@google/genai';
 import { generateContent } from './chatThunks';
 import type { RootState } from './store';
 
@@ -119,7 +119,10 @@ export const chatSlice = createSlice({
           currentConvo.messages.push(action.payload.userMessage, action.payload.modelResponse);
           // Auto-title the conversation after the first exchange
           if (currentConvo.messages.length === 2) {
-            const firstUserMessage = action.payload.userMessage.parts.map(p => 'text' in p ? p.text : '').join(' ');
+            const firstUserMessage = action.payload.userMessage.parts
+                ? action.payload.userMessage.parts.map(p => 'text' in p ? p.text : '').join(' ')
+                : '<UNDEFINED>';
+
             currentConvo.title = firstUserMessage.substring(0, 40) + (firstUserMessage.length > 40 ? '...' : '');
           }
         }

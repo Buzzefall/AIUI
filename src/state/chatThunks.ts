@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Content, Part } from '@google/generative-ai';
+import { Content, FinishReason, Part } from '@google/genai';
 
 import { GeminiApiClient } from '../api/gemini';
 
@@ -59,8 +59,22 @@ export const generateContent = createAsyncThunk<
     latestUserMessage.push({ text: prompt });
 
     const client = new GeminiApiClient(settings.apiKey);
-    const result = await client.generateContent({ history: currentConversation.messages, latestUserMessage });
-    const text = result.response.text();
+    const result = await client.generateContent({ 
+      history: currentConversation.messages, 
+      latestUserMessage, 
+      thinkingConfig: { includeThoughts: false, thinkingBudget: 32768 }
+    });
+    
+    const text = result.text;
+
+    if (text === undefined) {
+      const errMessage = 
+        result.candidates && result.candidates[0].finishMessage
+          ? result.candidates[0].finishMessage
+          : getTranslation(currentLocale, 'errors.unknownApiError');
+
+      rejectWithValue(errMessage);
+    }
 
     const userMessage: Content = { role: 'user', parts: latestUserMessage };
     const modelResponse: Content = { role: 'model', parts: [{ text }] };

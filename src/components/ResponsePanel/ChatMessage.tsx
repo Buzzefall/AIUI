@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Content } from '@google/generative-ai';
+import { Content } from '@google/genai';
 import { useTranslation } from '../../hooks/useTranslation';
 import { ChatMessagePart } from './MessagePart';
 import { ClipboardIcon } from '../shared/Icons';
@@ -14,9 +14,9 @@ export function ChatMessage({ message }: ChatMessageProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    const textToCopy = message.parts
-      .map(p => ('text' in p ? p.text : ''))
-      .join('\n');
+    const textToCopy = message.parts 
+      ? message.parts.map(p => ('text' in p ? p.text : '')).join('\n')
+      : '';
 
     navigator.clipboard.writeText(textToCopy).then(() => {
       setCopied(true);
@@ -30,7 +30,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
         {isModel ? 'G' : 'U'}
       </div>
       <div className={`relative p-4 rounded-lg max-w-2xl flex flex-col ${isModel ? 'bg-slate-100' : 'bg-primary/10'}`}>
-        {message.parts.map((part, index) => (
+        {message.parts && message.parts.map((part, index) => (
           <ChatMessagePart key={index} part={part} isModel={isModel} />
         ))}
         <button
