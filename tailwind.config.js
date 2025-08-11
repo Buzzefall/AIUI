@@ -8,6 +8,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        mono: ['Source Code Pro', 'monospace'],
+      },
       colors: {
         primary: '#3863f0', // Corresponds to Tailwind's blue-600
         'primary-dark': '#284cc2', // Corresponds to Tailwind's blue-700
