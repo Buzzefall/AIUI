@@ -19,7 +19,7 @@
  * @description Container for the new chat button.
  */
 .history-panel__new-chat-button-container {
-  padding: 0.5rem; /* p-2 */
+  padding: 0.25rem; /* p-2 */
 }
 
 /**

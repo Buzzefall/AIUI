@@ -77,7 +77,7 @@ export function ImportExportPanel() {
   };
 
   return (
-    <div className="p-2 text-normal text-center space-y-2">
+    <div className="text-normal text-center space-y-2">
       <Separator/>
 
       <div className="flex items-center justify-center space-x-2 mb-4">

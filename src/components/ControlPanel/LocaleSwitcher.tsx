@@ -8,7 +8,7 @@ export const LocaleSwitcher = () => {
   const currentLocale = useAppSelector(selectCurrentLocale);
 
   return (
-    <div className="flex justify-center items-center gap-2 my-4">
+    <div className="flex justify-center items-center gap-2 mt-4 mb-7">
       <p className="font-semibold">{t('localeSwitcher.title')}</p>
       {LocaleList.map((locale) => (
         <button

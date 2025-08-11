@@ -7,7 +7,7 @@ import { ApiKeyPanel } from './ApiKeyPanel';
 
 export function ControlPanel() {
   return (
-    <Panel orientation="vertical" className="w-1/6 flex-shrink-0">
+    <Panel orientation="vertical" className="w-1/6 flex-shrink-0 p-4">
       <HistoryPanel />
       <ApiKeyPanel />
       <ImportExportPanel />
