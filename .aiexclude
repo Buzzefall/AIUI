@@ -1,0 +1,8 @@
+venv/
+testenv/
+debugenv/
+node_modules/
+dist/
+logs/
+*.pyc
+package-lock.json

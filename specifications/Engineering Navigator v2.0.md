@@ -1,8 +1,8 @@
-# Engineering Co-pilot v2.0: System Specification
+# Engineering Navigator v2.0: System Specification
 
 ## 1. Introduction
 
-This document outlines the requirements for **Engineering Co-pilot v2.0**. The project evolves from the initial **Gemini API Client v1.0** into a comprehensive, interactive, and agentic assistant for engineering tasks. The core paradigm shifts from a linear chat interface to a project-based, multi-modal canvas, transforming the tool into a proactive co-pilot for design, analysis, and development.
+This document outlines the requirements for **Engineering Navigator v2.0**. The project evolves from the initial **Gemini API Client v1.0** into a comprehensive, interactive, and agentic assistant for engineering tasks. The core paradigm shifts from a linear chat interface to a project-based, multi-modal canvas, transforming the tool into a proactive Navigator for design, analysis, and development.
 
 ## 2. Core Principles
 

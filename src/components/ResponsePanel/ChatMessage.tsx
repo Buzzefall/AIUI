@@ -29,7 +29,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
       <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${isModel ? 'bg-primary' : 'bg-slate-400'}`}>
         {isModel ? 'G' : 'U'}
       </div>
-      <div className={`relative p-4 rounded-lg max-w-2xl flex flex-col ${isModel ? 'bg-slate-100' : 'bg-primary/10'}`}>
+      <div className={`relative p-4 rounded-lg max-w-[40%] overflow-auto flex flex-col ${isModel ? 'bg-slate-100' : 'bg-primary/10'}`}>
         {message.parts && message.parts.map((part, index) => (
           <ChatMessagePart key={index} part={part} isModel={isModel} />
         ))}

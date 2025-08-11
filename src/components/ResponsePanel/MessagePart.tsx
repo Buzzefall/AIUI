@@ -16,7 +16,7 @@ export function ChatMessagePart({ part, isModel }: ChatMessagePartProps) {
   if ('text' in part) {
     return (
       <ReactMarkdown 
-        className={`${styles.textMarkdown} prose prose-base max-w-none prose-a:text-primary hover:prose-a:text-primary-dark`} 
+        className={`${styles.textMarkdown} prose prose-base max-w-[100%] prose-a:text-primary hover:prose-a:text-primary-dark`} 
         remarkPlugins={[remarkGfm, remarkMath]} 
         rehypePlugins={[rehypeKatex]}
       >
