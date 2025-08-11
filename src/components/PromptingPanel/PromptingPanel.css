@@ -2,21 +2,46 @@
 .prompting-panel__textarea-container .EasyMDEContainer {
   flex-grow: 1;
   padding: 0.5rem;
-  border: 1px solid #d1d5db; /* slate-300 */
-  border-radius: var(--border-radius);
+  /* border: 1px solid #d1d5db; 
+  /* slate-300 */
+  /* border-radius: var(--border-radius); */
+}
+
+.prompting-panel__textarea-container .EasyMDEContainer .editor-toolbar {
+  border: none;
+  /* border-radius: var(--border-radius); */
+  margin-bottom: 0.5rem;
+  font-size: small;
+  padding: 0.25rem;
+}
+
+.prompting-panel__textarea-container .EasyMDEContainer .editor-toolbar button {
+  border-radius: calc(var(--border-radius) * 0.75);
+}
+
+.prompting-panel__textarea-container .EasyMDEContainer .editor-statusbar {
+  padding: 0;
+  margin-top: 0.25rem;
 }
 
 .prompting-panel__textarea-container .CodeMirror {
   border: 1px solid #d1d5db; /* slate-300 */
+  border-radius: var(--border-radius);
   font-size: 1.05rem;
   line-height: 1.5rem;
-  padding: 0.5rem;
+  padding: 0.25rem;
 }
 
 .prompting-panel__textarea-container .CodeMirror-scroll {
   min-height: 4.5rem !important; /* Override inline styles */
   max-height: 15rem;
   overflow-y: auto;
+}
+
+.prompting-panel__textarea-container .CodeMirror-focused {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: var(--border-shadow); /* ring-2 ring-primary/50 */
 }
 
 .prompting-panel__textarea-container .cm-s-easymde .CodeMirror-cursor {
@@ -58,33 +83,6 @@
 .prompting-panel__editor {
   flex-grow: 1;
   max-width: 100%;
-}
-
-/**
- * @element prompting-panel__submit-button
- * @description The button to submit the prompt.
- DEPRECATED
- */
-.prompting-panel__submit-button {
-  flex-shrink: 0; /* Prevents the button from shrinking */
-  background-color: var(--color-primary); /* primary */
-  color: white;
-  padding: 0.5rem;
-  margin-left: 0.5rem;
-  margin-bottom: 0.05rem;
-  border-radius: 0.5rem; /* rounded-full */
-  font-weight: 600;
-  height: 16%;
-  transition: background-color 0.2s;
-}
-
-.prompting-panel__submit-button:hover:not(:disabled) {
-  background-color: #4338ca; /* primary-dark */
-}
-
-.prompting-panel__submit-button:disabled {
-  background-color: #9ca3af; /* slate-400 */
-  cursor: not-allowed;
 }
 
 /**
@@ -157,17 +155,6 @@
 }
 
 /**
- * @element prompting-panel__remove-all-icon
- * @description Icon for the remove all files button.
- */
-.prompting-panel__remove-all-icon {
-  flex-shrink: 0;
-  margin: 4rem;
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-/**
  * @element prompting-panel__file-tile
  * @description A single tile in the file preview grid.
  */
@@ -187,7 +174,7 @@
 }
 
 .prompting-panel__file-tile:hover {
-  border-color: #4f46e5; /* primary */
+  border-color: var(--color-primary); /* primary */
 }
 
 /**
@@ -277,7 +264,8 @@
 }
 
 .prompting-panel__dropzone:hover {
-  border-color: #4f46e5; /* primary */
+  border-color: var(--color-primary); /* primary */
+  box-shadow: var (--border-shadow)
 }
 
 /**
@@ -285,8 +273,8 @@
  * @description A modifier for when a file is being dragged over the dropzone.
  */
 .prompting-panel__dropzone--dragging {
-  border-color: #4f46e5; /* primary */
-  background-color: rgba(79, 70, 229, 0.05); /* bg-primary/5 */
+  border-color: var(--color-primary); /* primary */
+  background-color: rgba(79, 120, 255, 0.05); /* bg-primary/5 */
 }
 
 /**
@@ -301,7 +289,7 @@
 }
 
 .prompting-panel__dropzone:hover .prompting-panel__dropzone-text {
-  color: #4f46e5; /* primary */
+  color: var(--color-primary); /* primary */
 }
 
 @keyframes fade-in {

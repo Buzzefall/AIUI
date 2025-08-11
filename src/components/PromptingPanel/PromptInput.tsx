@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useMemo } from 'react';
 
 import SimpleMdeEditor from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
@@ -15,51 +15,46 @@ interface PromptInputProps {
 
 export function PromptInput({ prompt, isLoading, apiKey, formRef, onPromptChange }: PromptInputProps) {
   const { t } = useTranslation();
-  const editorContainerRef = useRef<HTMLDivElement>(null);
 
   const editorOptions = useMemo(() => {
     return {
       autofocus: true,
       placeholder: t('promptingPanel.placeholder'),
       // toolbar: false,
-      // status: true,
+      // status: false,
       spellChecker: false,
-      // lineNumbers: true,
-      
-      autoDownloadFontAwesome: true,
-      sideBySideFullscreen: true,
-      renderingConfig: {
-        codeSyntaxHighlighting: true
-      },
     };
   }, [t]);
 
-  // useEffect(() => {
-  //   if (editorContainerRef.current) {
-  //     const codeMirrorScroll = editorContainerRef.current.querySelector('.CodeMirror-scroll') as HTMLElement;
-
-  //     if (codeMirrorScroll) {
-  //       codeMirrorScroll.style.height = 'auto';
-  //       codeMirrorScroll.style.height = `${codeMirrorScroll.scrollHeight}px`;
-  //     }
-  //   }
-  // }, [prompt]);
-
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (isLoading || !prompt.trim() || !apiKey) {
-      return;
-    }
+    // event.nativeEvent.stopPropagation();
 
     if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+      let abort = false;
+
+      if (isLoading ) {
+        console.log('Can not submit form while the chat is loading.')
+        abort = true;
+      }
+
+      if (!prompt.trim() ) {
+        console.log('Can not submit form with empty prompt.')
+        abort = true;
+      }
+
+      if (!apiKey ) { 
+        console.log('Can not submit form: API key required.')
+        abort = true;
+      }
+
+      if (abort) return;
+
       formRef.current?.requestSubmit();
     }
   };
 
   return (
-    <div className="prompting-panel__textarea-container" ref={editorContainerRef}>
-      {/* <button type="submit" className="prompting-panel__submit-button" disabled={isLoading || !prompt.trim() || !apiKey}>
-        <SendIcon />
-      </button> */}
+    <div className="prompting-panel__textarea-container">
       <SimpleMdeEditor
         className='prompting-panel__editor'
         value={prompt}

@@ -147,7 +147,7 @@ export const FileUploadManager = forwardRef<FileUploadManagerRef, FileUploadMana
         onDragLeave={handleDragLeave}
         onClick={() => fileInputRef.current?.click()}
       >
-        <PlusIcon />
+        <PlusIcon className="prompting-panel__remove-all-icon" />
         <p className="prompting-panel__dropzone-text">{t('promptingPanel.dropzone')}</p>
       </div>
     </>
