@@ -36,4 +36,4 @@ This is where the separate streams of development converge and the collaborative
 *   **4.2. Enable Real-Time Collaboration:** Integrate WebSockets to synchronize the project state across multiple clients in real-time, enabling shared workspaces.
 *   **4.3. Implement Presence Indicators:** Add the UI elements to show which users are active in a shared project.
 
-This path prioritizes building the fundamental architectural layers first, allowing for a stable and scalable evolution toward the full vision of the Engineering Co-pilot.
+This path prioritizes building the fundamental architectural layers first, allowing for a stable and scalable evolution toward the full vision of the **Engineering Co-pilot**.
