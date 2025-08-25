@@ -1,6 +1,14 @@
+# AI Tools
+
+.gemini/
+
 # backend
 
 backend/devenv/
+
+# MCPs
+
+deno.json
 
 # frontend
 
