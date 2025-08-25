@@ -54,6 +54,9 @@
   "localeSwitcher": {
     "title": "Choose Language"
   },
+  "controlPanel": {
+    "troubleshootingMode": "Troubleshooting Mode"
+  },
   "tokenCount": {
     "historyTokens": "History tokens:",
     "historyTokensCached": "History tokens (cached):"

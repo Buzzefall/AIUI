@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { unwrapResult } from '@reduxjs/toolkit'; // <-- Import unwrapResult
 
 // Import the refactored component and its types
 import { FileUploadManager, ManagedFile, FileUploadManagerRef } from './FileUploadManager';
@@ -42,13 +43,25 @@ export function PromptingPanel() {
     if (!prompt.trim() || isLoading || !apiKey || !currentConversationId) return;
 
     const filesToSubmit = managedFiles.map(({ mimeType, base64 }) => ({ mimeType, base64 }));
-    await dispatch(generateContentThunk({ prompt, files: filesToSubmit }));
-    await dispatch(updateTokenCountThunk({ conversationId: currentConversationId }));
     
-    dispatch(setPrompt(''));
+    try {
+      const resultAction = await dispatch(generateContentThunk({ prompt, files: filesToSubmit }));
+      unwrapResult(resultAction);
 
-    // Call the reset method on the child component
-    fileUploadManagerRef.current?.reset();
+      // --- Success Case ---
+      // Clear inputs only if the API call was successful
+      dispatch(setPrompt(''));
+      fileUploadManagerRef.current?.reset();
+      
+      // Update token count on success
+      await dispatch(updateTokenCountThunk({ conversationId: currentConversationId }));
+
+    } catch (error) {
+      // --- Failure Case ---
+      // The error is already handled and added to the chat history by the rejected reducer.
+      // We can optionally log it here for debugging, but we don't clear the inputs.
+      console.error('Failed to generate content:', error);
+    }
   };
 
   return (

@@ -54,6 +54,9 @@
   "localeSwitcher": {
     "title": "Выбрать язык"
   },
+  "controlPanel": {
+    "troubleshootingMode": "Режим отладки"
+  },
   "tokenCount": {
     "historyTokens": "Токенов в истории:",
     "historyTokensCached": "Токенов в истории (кэш):"

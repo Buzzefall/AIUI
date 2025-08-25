@@ -1,2 +1,8 @@
-node_modules/
+# backend
+
+backend/devenv/
+
+# frontend
+
 dist/
+node_modules/

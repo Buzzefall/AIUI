@@ -5,7 +5,7 @@ import { GeminiApiClient } from '../api/gemini';
 
 import type { RootState } from './store';
 import { selectCurrentLocale } from './localeSlice';
-import { selectCurrentConversation } from './chatSlice';
+import { selectCurrentConversation, selectTroubleshootingMode } from './chatSlice'; // <-- Import selector
 import { getTranslation } from '../utils/getTranslation';
 
 
@@ -22,6 +22,12 @@ interface GenerateContentResult {
   modelResponse: Content;
 }
 
+interface RejectValue {
+  userMessage: Content;
+  errorMessage: string;
+  finishReason?: FinishReason;
+}
+
 /**
  * An async thunk to generate content using the Gemini API.
  * It orchestrates the entire API call lifecycle, including fetching state,
@@ -30,58 +36,65 @@ interface GenerateContentResult {
 export const generateContent = createAsyncThunk<
   GenerateContentResult,
   GenerateContentArgs,
-  { state: RootState; rejectValue: string }
+  { state: RootState; rejectValue: RejectValue }
 >('chat/generateContent', async ({ prompt, files }, { getState, rejectWithValue }) => {
   const state = getState();
   const { settings } = state;
   const currentLocale = selectCurrentLocale(state);
   const currentConversation = selectCurrentConversation(state);
+  const troubleshootingMode = selectTroubleshootingMode(state); // <-- Get mode
+
+  // For multimodal prompts, the order of parts is important.
+  const latestUserMessageParts: Part[] = [];
+  if (files) {
+    files.forEach(file => {
+      latestUserMessageParts.push({ inlineData: { mimeType: file.mimeType, data: file.base64 } });
+    });
+  }
+  latestUserMessageParts.push({ text: prompt });
+  const userMessage: Content = { role: 'user', parts: latestUserMessageParts };
 
   if (!settings.apiKey) {
-    return rejectWithValue(getTranslation(currentLocale, 'errors.apiKeyNotSet'));
-
+    const errorMessage = getTranslation(currentLocale, 'errors.apiKeyNotSet');
+    return rejectWithValue({ userMessage, errorMessage });
   }
 
   if (!currentConversation) {
-    return rejectWithValue(getTranslation(currentLocale, 'errors.noActiveConversation'));
+    const errorMessage = getTranslation(currentLocale, 'errors.noActiveConversation');
+    return rejectWithValue({ userMessage, errorMessage });
   }
 
-  try {
-    // For multimodal prompts, the order of parts is important.
-    // The file data should come before the text prompt.
-    const latestUserMessage: Part[] = [];
-    if (files) {
-      files.forEach(file => {
-        latestUserMessage.push({ inlineData: { mimeType: file.mimeType, data: file.base64 } });
-      });
-    }
-    // The text part should always be present.
-    latestUserMessage.push({ text: prompt });
+  // Filter history based on troubleshooting mode
+  const history = troubleshootingMode
+    ? currentConversation.messages.map(m => m.content)
+    : currentConversation.messages
+        .filter(m => !m.isErrorAssociated)
+        .map(m => m.content);
 
+  try {
     const client = new GeminiApiClient(settings.apiKey);
-    const result = await client.generateContent({ 
-      history: currentConversation.messages, 
-      latestUserMessage, 
-      thinkingConfig: { includeThoughts: false, thinkingBudget: 32768 }
+    const result = await client.generateContent({
+      history, // <-- Use filtered history
+      latestUserMessage: userMessage.parts,
+      thinkingConfig: { includeThoughts: false, thinkingBudget: 24576 }
     });
-    
+
     const text = result.text;
 
     if (text === undefined) {
-      const errMessage = 
-        result.candidates && result.candidates[0].finishMessage
-          ? result.candidates[0].finishMessage
-          : getTranslation(currentLocale, 'errors.unknownApiError');
+      const finishReason = result.candidates?.[0]?.finishReason;
+      const errorMessage =
+        result.candidates?.[0]?.finishMessage ||
+        getTranslation(currentLocale, 'errors.unknownApiError');
 
-      rejectWithValue(errMessage);
+      return rejectWithValue({ userMessage, errorMessage, finishReason });
     }
 
-    const userMessage: Content = { role: 'user', parts: latestUserMessage };
     const modelResponse: Content = { role: 'model', parts: [{ text }] };
 
     return { userMessage, modelResponse };
   } catch (error: any) {
     const errorMessage = error.message || getTranslation(currentLocale, 'errors.unknownApiError');
-    return rejectWithValue(errorMessage);
+    return rejectWithValue({ userMessage, errorMessage });
   }
 });

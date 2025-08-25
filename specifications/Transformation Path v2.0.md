@@ -1,6 +1,6 @@
 # Transformation Path to v2.0
 
-The path from v1.0 to v2.0 is a journey of architectural and conceptual transformation. It unfolds in phases, each building upon the last, to evolve the simple client into a collaborative co-pilot.
+The path from v1.0 to v2.0 is a journey of architectural and conceptual transformation. It prioritizes a minimally viable, seamless transition of existing functionality to a new, extensible architecture. It unfolds in phases, each building upon the last, to evolve the simple client into a collaborative co-pilot.
 
 Here is the high-level view of that path:
 
@@ -20,20 +20,28 @@ With the backend in place, the user experience can be transformed. This phase fo
 *   **2.2. Develop Canvas Primitives:** Implement the core interactions: creating, moving, resizing, and deleting fundamental objects like Dialogue Panels and Note Panels.
 *   **2.3. Integrate File Objects:** Enable the uploading and rendering of external documents (PDFs, source code, images) as objects on the canvas, making them part of the persistent project state.
 
-### **Phase 3: The Agentic Core & Tooling Framework**
+### **Phase 3: Stubbing the Agentic Core**
 
-This phase gives the AI its new capabilities. It can be developed in parallel with the frontend work.
+To enable a seamless transition, this phase focuses on creating the necessary interfaces (stubs) for the future agentic capabilities without implementing their full complexity.
 
-*   **3.1. Design the Tooling API:** Define a clear, extensible contract between the backend and the AI for how "tools" are described, invoked, and how their results are returned.
-*   **3.2. Build the Orchestration Engine:** The backend must be taught how to manage multi-step agentic workflows, chaining tool calls and maintaining context to achieve higher-level user goals.
-*   **3.3. Implement Initial Tools:** Develop the first set of specified tools (e.g., Code Interpreter, Diagram Generator) as sandboxed, modular components.
+*   **3.1. Define the Tooling API Contract:** Design the API endpoints and data structures for how the frontend will eventually request agentic actions.
+*   **3.2. Implement Backend Stubs:** The backend will expose these new endpoints, but they will initially contain placeholder logic that gracefully falls back to the existing v1.0 chat functionality.
+*   **3.3. Integrate Frontend Hooks:** The new canvas UI will be wired to these stubbed endpoints, ensuring the user-facing controls are in place and functional.
 
-### **Phase 4: Integration, Collaboration, and Synthesis**
+### **Phase 4: Integration & Functionality Preservation**
 
-This is where the separate streams of development converge and the collaborative aspect is enabled.
+This is where the separate streams of development converge. The goal is to have the new v2.0 architecture running with the preserved v1.0 feature set.
 
-*   **4.1. Connect Frontend to Agent:** The frontend canvas must be able to initiate agentic workflows and render the results—including AI-generated artifacts like diagrams—back onto the canvas.
-*   **4.2. Enable Real-Time Collaboration:** Integrate WebSockets to synchronize the project state across multiple clients in real-time, enabling shared workspaces.
-*   **4.3. Implement Presence Indicators:** Add the UI elements to show which users are active in a shared project.
+*   **4.1. Connect Frontend to Backend:** The canvas UI (Phase 2) will be fully integrated with the backend (Phase 1).
+*   **4.2. Activate Core Functionality via Stubs:** The existing chat functionality will now operate through the new UI, powered by the stubbed agentic APIs (Phase 3).
+*   **4.3. Deprecate v1.0 Components:** The original dual-panel layout and its components will be fully decommissioned, completing the architectural migration.
 
-This path prioritizes building the fundamental architectural layers first, allowing for a stable and scalable evolution toward the full vision of the **Engineering Co-pilot**.
+### **Future Extensions**
+
+The v2.0 architecture is designed to be a foundation. The following key features, while not part of the initial v2.0 scope, are anticipated and can be built upon the new foundation:
+
+*   **Full Agentic Core:** Replacing the stubs with a complete implementation of the orchestration engine and tools (e.g., Code Interpreter, Diagram Generator).
+*   **Real-Time Collaboration:** Integrating WebSockets to synchronize the project state across multiple clients in real-time.
+*   **Presence Indicators:** Adding UI elements to show which users are active in a shared project.
+
+This path prioritizes a stable and scalable evolution toward the full vision of the **Engineering Co-pilot**.

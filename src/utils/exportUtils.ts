@@ -7,10 +7,36 @@ export function sanitizeFilename(filename: string): string {
 
 export function formatToMarkdown(conversation: Conversation): string {
   let markdown = `# ${conversation.title}\n\n`;
+  
   conversation.messages.forEach(msg => {
     const role = msg.role === 'user' ? 'You' : 'Gemini';
-    markdown += `**${role}:**\n${msg.parts[0].text}\n\n`;
+    const msgHeader = `**${role}:**\n\n`;
+    markdown += msgHeader;
+    
+    let msgBody: string = '';
+    msg.parts?.forEach(part => {
+      function parseMsgPart() {
+        if (part.text) {
+          return `${part.text}`;
+        }
+        else if (part.inlineData) {
+          const data = part.inlineData;
+          return `<inlineData displayName=${data.displayName} mimeType=${data.mimeType} size=${data.data?.length} </inlineData>`;
+        }
+        else {
+          return '<unknown_message_part_type>'
+        }
+      }
+      
+      const markdownPart = parseMsgPart();
+      
+      msgBody += markdownPart;
+      msgBody += '\n\n';
+    });
+
+    markdown += msgBody;
   });
+
   return markdown;
 }
 

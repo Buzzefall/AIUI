@@ -12,12 +12,32 @@ interface ChatMessagePartProps {
   isModel: boolean;
 }
 
+const isErrorPart = (part: Part): boolean => {
+  return part.text?.startsWith('**Error:**') || false;
+}
+
 export function ChatMessagePart({ part, isModel }: ChatMessagePartProps) {
+  const isError = isErrorPart(part);
+
+  if (isError) {
+    return (
+      <div className={styles.errorPart}>
+        <ReactMarkdown
+          className={`${styles.textMarkdown} prose prose-base max-w-[100%] prose-a:text-primary hover:prose-a:text-primary-dark`}
+          remarkPlugins={[remarkGfm, remarkMath]}
+          rehypePlugins={[rehypeKatex]}
+        >
+          {part.text}
+        </ReactMarkdown>
+      </div>
+    );
+  }
+
   if ('text' in part) {
     return (
-      <ReactMarkdown 
-        className={`${styles.textMarkdown} prose prose-base max-w-[100%] prose-a:text-primary hover:prose-a:text-primary-dark`} 
-        remarkPlugins={[remarkGfm, remarkMath]} 
+      <ReactMarkdown
+        className={`${styles.textMarkdown} prose prose-base max-w-[100%] prose-a:text-primary hover:prose-a:text-primary-dark`}
+        remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}
       >
         {part.text}
@@ -28,6 +48,6 @@ export function ChatMessagePart({ part, isModel }: ChatMessagePartProps) {
   if ('inlineData' in part && part.inlineData) {
     return <ChatFilePreview mimeType={part.inlineData.mimeType ?? ''} data={part.inlineData.data ?? ''} isModel={isModel} />;
   }
-  
+
   return null;
 }

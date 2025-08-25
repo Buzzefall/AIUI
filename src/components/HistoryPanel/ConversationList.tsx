@@ -1,59 +1,57 @@
-import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useContextMenu } from '../../hooks/useContextMenu';
 import { ContextMenu } from '../shared/ContextMenu/ContextMenu';
 import { MenuItem } from '../shared/ContextMenu/MenuItem';
 import { MoreOptionsIcon } from '../shared/Icons';
-import { Conversation } from '../../state/chatSlice';
+import { Conversation, deleteConversation, selectConversations, selectCurrentConversationId, switchConversation } from '../../state/chatSlice';
+import { formatToMarkdown, downloadFile, sanitizeFilename, formatToJson } from '../../utils/exportUtils';
 
 interface ConversationListProps {
-  conversations: Conversation[];
-  currentId: string | null;
   isLoading: boolean;
-  onSwitchConversation: (id: string) => void;
-  onDeleteConversation: (id: string) => void;
-  onOpenContextMenu: (e: React.MouseEvent, conversation: Conversation) => void;
-  menuState: any; // TODO: Define a proper type for menuState
-  onCloseContextMenu: () => void;
-  onExportMarkdown: (convo: Conversation) => void;
-  onExportJson: (convo: Conversation) => void;
 }
 
-export function ConversationList({
-  conversations,
-  currentId,
-  isLoading,
-  onSwitchConversation,
-  onDeleteConversation,
-  onOpenContextMenu,
-  menuState,
-  onCloseContextMenu,
-  onExportMarkdown,
-  onExportJson,
-}: ConversationListProps) {
+export function ConversationList({ isLoading }: ConversationListProps) {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const conversations = useAppSelector(selectConversations);
+  const currentId = useAppSelector(selectCurrentConversationId);
+  const { menuState, openMenu, closeMenu } = useContextMenu();
 
-  const handleDelete = () => {
+  const handleSwitchConversation = (id: string) => {
+    dispatch(switchConversation(id));
+  };
+  
+  const handleDeleteConversation = () => {
     const convo = menuState.contextData as Conversation;
+    
     if (convo && window.confirm(t('historyPanel.deleteConfirm', { title: convo.title }))) {
-      onDeleteConversation(convo.id);
+      dispatch(deleteConversation(convo.id));
     }
-    onCloseContextMenu();
+
+    closeMenu();
   };
 
   const handleExportMarkdown = () => {
     const convo = menuState.contextData as Conversation;
+
     if (convo) {
-      onExportMarkdown(convo);
+        const content = formatToMarkdown(convo);
+        downloadFile(content, `${sanitizeFilename(convo.title)}.md`, 'text/markdown');
     }
-    onCloseContextMenu();
+
+    closeMenu();
   };
 
   const handleExportJson = () => {
     const convo = menuState.contextData as Conversation;
+
     if (convo) {
-      onExportJson(convo);
+      const content = formatToJson(convo);
+      downloadFile(content, `${sanitizeFilename(convo.title)}.json`, 'application/json');
     }
-    onCloseContextMenu();
+
+    closeMenu();
   };
 
   return (
@@ -62,8 +60,8 @@ export function ConversationList({
         {conversations.map((convo) => (
           <li key={convo.id} className="history-panel__conversation-item">
             <button
-              onClick={() => !menuState.isOpen && onSwitchConversation(convo.id)}
-              onContextMenu={(e) => onOpenContextMenu(e, convo)}
+              onClick={() => !menuState.isOpen && handleSwitchConversation(convo.id)}
+              onContextMenu={(e) => openMenu(e, convo)}
               disabled={isLoading}
               className={`history-panel__conversation-button ${
                 currentId === convo.id
@@ -73,7 +71,7 @@ export function ConversationList({
             >
               <span className="history-panel__conversation-title">{convo.title}</span>
               <div
-                onClick={(e) => { e.stopPropagation(); onOpenContextMenu(e, convo); }}
+                onClick={(e) => { e.stopPropagation(); openMenu(e, convo); }}
                 className="history-panel__more-options-button"
                 title={t('historyPanel.moreOptionsTitle')}
               >
@@ -86,14 +84,14 @@ export function ConversationList({
       <ContextMenu
         isOpen={menuState.isOpen}
         position={menuState.position}
-        onClose={onCloseContextMenu}
+        onClose={closeMenu}
       >
         <MenuItem label={t('historyPanel.export')}>
           <MenuItem label={t('historyPanel.exportMarkdown')} onClick={handleExportMarkdown} />
           <MenuItem label={t('historyPanel.exportJson')} onClick={handleExportJson} />
         </MenuItem>
         <MenuItem label="---" />
-        <MenuItem label={t('historyPanel.delete')} onClick={handleDelete} />
+        <MenuItem label={t('historyPanel.delete')} onClick={handleDeleteConversation} />
       </ContextMenu>
     </nav>
   );

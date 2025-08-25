@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../state/hooks';
 import { RootState } from '../../state/store';
 import { downloadFile, formatToJson, sanitizeFilename } from '../../utils/exportUtils';
 import { useTranslation } from '../../hooks/useTranslation';
-import { setChatState } from '../../state/chatSlice';
+import { Conversation, setChatState, addOrUpdateConversationState } from '../../state/chatSlice';
 import { setSettingsState } from '../../state/settingsSlice';
 import { setLocaleState } from '../../state/localeSlice';
 import { Separator } from '../shared/Separator';
@@ -50,12 +50,21 @@ export function ImportExportPanel() {
 
     if (file) {
       const reader = new FileReader();
+
       reader.onload = (e) => {
         try {
           const importedData = JSON.parse(e.target?.result as string);
+          
+          console.log('Importing data');
 
           if (importedData.chat) {
             dispatch(setChatState(importedData.chat));
+          } 
+          // else if (isConversation(importedData)) {
+          else if (isConversation(importedData)) {
+            console.log(`Importing conversation "${importedData.title}" with ID "${importedData.id}"...`);
+            dispatch(addOrUpdateConversationState(importedData));
+            console.log(`Successfully imported conversation with ID "${importedData.id}."`);
           }
 
           if (importedData.settings) {
@@ -72,9 +81,23 @@ export function ImportExportPanel() {
           alert('Error importing file. Please ensure it is a valid JSON.');
         }
       };
+
       reader.readAsText(file);
     }
   };
+
+  // Type guard to check if an object is a Conversation
+function isConversation(data: any): data is Conversation {
+  return (
+    data &&
+    typeof data === 'object' &&
+    typeof data.id === 'string' &&
+    typeof data.title === 'string' &&
+    (typeof data.totalTokens === 'number' || !data.totalTokens) && // optional
+    (typeof data.cachedContentTokenCount === 'number' || !data.cachedContentTokenCount) && // optional
+    Array.isArray(data.messages)
+  );
+}
 
   return (
     <div className="text-normal text-center space-y-2">

@@ -1,4 +1,45 @@
-- To finish implementation of Import / Export feature: The `ExportPanel.tsx` component has a toggle for import/export mode and commented-out import logic. The Redux slices (`chatSlice`, `settingsSlice`, `localeSlice`) have corresponding `set` actions, but these are not yet dispatched from the `ExportPanel`.
-- To make API errors part of the message list, so that they were not misplaced upon conversation change: Currently, API errors are stored as a single `error` field in `chatSlice` and displayed in `ResponsePanel`. This error is not tied to a specific conversation message and may be lost or become irrelevant when switching conversations. Errors should be integrated as a message within the `messages` array of the relevant `Conversation` object.
-- To fix UI refresh upon failure: files must not vanish and form must not reset: The `PromptingPanel` manages `prompt` and `selectedFiles` using `useState`. There is no explicit logic to clear these states on API call failure, suggesting they should persist. Verification is needed to confirm if they are indeed vanishing or resetting under error conditions, which might indicate an unhandled component lifecycle issue.
-- Add a button to switch from model flash to pro: This feature is not currently implemented. It will require adding a new state for model selection (e.g., in `settingsSlice`), a UI element (button/toggle) in an appropriate panel (e.g., `ControlPanel` or a new `ModelSelectionPanel`), and logic to update the model used in `geminiApiClient` based on the selected option.
+# Project TODO List
+
+This document tracks the required tasks for the Engineering Co-Pilot application. It is divided into short-term fixes for the current implementation and long-term features required to fulfill the v2.0 vision.
+
+## 🎯 Short-Term Fixes & v1.5 Features
+
+These tasks address issues in the current (v1.5) implementation and add smaller, requested features.
+
+- [x] **Integrate API Errors into Chat History:**
+  - **Completed:** Errors from the API are now captured and displayed inline in the chat history. The user message that triggered the error is preserved, and the error message itself includes the `FinishReason` from the API for better diagnostics. Error messages are styled distinctly to be noticeable.
+  - **Completed:** Added a "Troubleshooting Mode" toggle. When disabled (default), user/error message pairs are excluded from the history sent to the API, preventing the model from getting confused by its own past failures.
+  - **Completed:** Implemented a data migration to seamlessly update users with older chat histories stored in `localStorage` to the new data structure.
+
+- [x] **Preserve UI State on API Failure:**
+  - **Problem:** The prompt text and attached files in the `PromptingPanel` are cleared immediately after an API call is sent, even if it fails.
+  - **Solution:** Refactor the `handleSubmit` function in `PromptingPanel.tsx`. The `generateContentThunk` dispatch should be checked for success or failure. Only clear the prompt and file inputs if the API call was successful.
+
+- [ ] **Implement Model Selection (Flash vs. Pro):**
+  - **Problem:** The Gemini model (`gemini-2.5-pro-latest`) is hardcoded in `geminiApiClient.ts`.
+  - **Solution:**
+    1.  Add a `model` field to `settingsSlice`.
+    2.  Create a new UI component (e.g., `ModelSelectorPanel`) with a dropdown or toggle, and add it to the `ControlPanel`.
+    3.  Update `geminiApiClient.ts` to accept the model name in its constructor or `generateContent` method.
+    4.  Pass the selected model from the state to the API client when `generateContent` is called.
+
+## 🚀 v2.0 Core Features
+
+These are major, high-level features that represent the core of the **Engineering Co-Pilot** (v2.0 specification of the application). Each of these will likely need to be broken down into smaller epics and tasks.
+
+- [ ] **Architect the "Infinite Canvas" Interface:**
+  - **Goal:** Replace the linear, single-dialogue view with a persistent, project-based "infinite canvas".
+  - **Key Components:** Multi-modal objects (dialogue panels, document previews, notes), contextual connections between objects.
+  - **Tech:** Requires integrating a canvas library like `react-flow` or similar.
+
+- [ ] **Develop the Agentic AI & Tooling Framework:**
+  - **Goal:** Evolve the AI from a passive respondent to a proactive agent with a "tool belt".
+  - **Key Components:** Backend framework for defining and executing tools (Code Interpreter, Unit Test Generator, Diagram Generator), and a workflow engine to chain tool calls.
+
+- [ ] **Implement Project-Based Workspaces:**
+  - **Goal:** Organize all work within persistent, savable "Projects".
+  - **Key Components:** Backend logic for project state persistence (likely in MongoDB), a "Project Explorer" UI on the frontend.
+
+- [ ] **Enable Real-Time Collaboration:**
+  - **Goal:** Allow multiple users to collaborate in a shared project workspace.
+  - **Key Components:** Backend WebSocket implementation for real-time synchronization, frontend logic to handle and display live updates, user presence indicators.

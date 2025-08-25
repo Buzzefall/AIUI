@@ -1,15 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector } from '../../state/hooks';
-import { selectCurrentConversation, selectError, selectIsLoading } from '../../state/chatSlice';
+import { selectCurrentConversation, selectIsLoading } from '../../state/chatSlice';
 import { LoadingSpinner } from './LoadingSpinner';
-import { useTranslation } from '../../hooks/useTranslation';
 import { ChatMessage } from './ChatMessage';
 
 export function ResponsePanel() {
-  const { t } = useTranslation();
   const currentConversation = useAppSelector(selectCurrentConversation);
   const isLoading = useAppSelector(selectIsLoading);
-  const error = useAppSelector(selectError);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -21,9 +18,9 @@ export function ResponsePanel() {
   }, [currentConversation?.messages, isLoading]);
 
   return (
-    <div className="flex-grow flex flex-col overflow-y-auto">
-      {currentConversation?.messages.map((msg, index) => (
-        <ChatMessage key={index} message={msg} />
+    <div className="flex-grow flex flex-col overflow-y-auto p-4">
+      {currentConversation?.messages.map((msg) => (
+        <ChatMessage key={msg.id} message={msg} />
       ))}
 
       {isLoading && (
@@ -32,14 +29,6 @@ export function ResponsePanel() {
           <div className="p-4 rounded-lg bg-slate-100">
             <LoadingSpinner />
           </div>
-        </div>
-      )}
-
-      {/* Add div to constrict element? */}
-      {error && (
-        <div className="text-red-600 bg-red-50 p-4 rounded-md my-4">
-          <p className="font-bold">{t('responsePanel.errorTitle')}</p>
-          <pre className="whitespace-pre-wrap text-sm">{error}</pre>
         </div>
       )}
 
