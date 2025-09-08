@@ -60,5 +60,9 @@
   "tokenCount": {
     "historyTokens": "Токенов в истории:",
     "historyTokensCached": "Токенов в истории (кэш):"
+  },
+  "contextMenu": {
+    "delete": "Удалить",
+    "deleteSelected": "Удалить выбранное"
   }
 }

@@ -60,5 +60,9 @@
   "tokenCount": {
     "historyTokens": "History tokens:",
     "historyTokensCached": "History tokens (cached):"
+  },
+  "contextMenu": {
+    "delete": "Delete",
+    "deleteSelected": "Delete Selected"
   }
 }

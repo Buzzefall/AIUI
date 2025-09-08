@@ -1,8 +1,12 @@
 import { useState } from 'react';
-import { Message } from '../../state/chatSlice';
+import { Message, toggleMessageSelection, selectSelectedMessageIds } from '../../state/chatSlice';
+import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import { useTranslation } from '../../hooks/useTranslation';
+import { useContextMenu } from '../../hooks/useContextMenu';
 import { ChatMessagePart } from './MessagePart';
 import { ClipboardIcon } from '../shared/Icons';
+import { MessageContextMenu } from './MessageContextMenu';
+import styles from './ChatMessage.module.css';
 
 interface ChatMessageProps {
   message: Message;
@@ -10,12 +14,19 @@ interface ChatMessageProps {
 
 export function ChatMessage({ message }: ChatMessageProps) {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const { menuState, openMenu, closeMenu } = useContextMenu();
+
+  const selectedMessageIds = useAppSelector(selectSelectedMessageIds);
+  const isSelected = selectedMessageIds.includes(message.id);
+
   const [copied, setCopied] = useState(false);
   
   const msgParts = message.content.parts;
   const isModel = message.content.role === 'model';
 
-  const handleCopy = () => {
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent container click from firing
     const textToCopy = msgParts?.map(p => ('text' in p ? p.text : '')).join('\n') || '';
 
     navigator.clipboard.writeText(textToCopy).then(() => {
@@ -24,8 +35,12 @@ export function ChatMessage({ message }: ChatMessageProps) {
     });
   };
 
+  const handleContainerClick = () => {
+    dispatch(toggleMessageSelection({ messageId: message.id }));
+  };
+
   // Base classes
-  const messageContainerBase = "group flex items-start gap-4 my-4";
+  const messageContainerBase = "group flex items-start gap-4 my-4 cursor-pointer"; // Added cursor-pointer
   const messageBubbleBase = "relative p-4 rounded-lg max-w-[40%] overflow-auto flex flex-col";
 
   // Role-specific classes
@@ -40,13 +55,12 @@ export function ChatMessage({ message }: ChatMessageProps) {
   const modelAvatar = "bg-primary";
 
   const containerClasses = `${messageContainerBase} ${isModel ? modelContainer : userContainer}`;
-  const bubbleClasses = `${messageBubbleBase} ${isModel ? modelBubble : userBubble}`;
+  const bubbleClasses = `${messageBubbleBase} ${isModel ? modelBubble : userBubble} ${isSelected ? styles.messageSelected : ''}`;
   const avatarClasses = `flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${isModel ? modelAvatar : userAvatar}`;
   const avatarLetter = isModel ? 'G' : 'U';
 
-
   return (
-    <div className={containerClasses}>
+    <div className={containerClasses} onClick={handleContainerClick} onContextMenu={openMenu}>
       <div className={avatarClasses}>
         {avatarLetter}
       </div>
@@ -62,6 +76,13 @@ export function ChatMessage({ message }: ChatMessageProps) {
             <ClipboardIcon copied={copied} />
         </button>
       </div>
+      <MessageContextMenu
+        isOpen={menuState.isOpen}
+        position={menuState.position}
+        onClose={closeMenu}
+        messageId={message.id}
+      />
     </div>
   );
 }
+
