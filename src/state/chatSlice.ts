@@ -35,50 +35,7 @@ const loadStateFromLocalStorage = (): Partial<ChatState> => {
     if (serializedState === null) {
       return {};
     }
-
-    let loadedState = JSON.parse(serializedState);
-    if (!loadedState.conversations || loadedState.conversations.length === 0) {
-      return loadedState; // No conversations to migrate
-    }
-
-    // Unified migration logic
-    const migratedConversations = loadedState.conversations.map((convo: any) => {
-      if (!convo.messages || convo.messages.length === 0) {
-        return convo;
-      }
-
-      const newMessages: Message[] = [];
-      for (let i = 0; i < convo.messages.length; i += 2) {
-        const userMsgData = convo.messages[i];
-        const modelMsgData = convo.messages[i + 1];
-
-        // Handle cases where message is a raw Content object or a malformed Message object
-        const userContent = userMsgData.content || userMsgData;
-        const userMessage: Message = {
-          id: userMsgData.id || nanoid(),
-          responseTo: null,
-          content: userContent,
-          isErrorAssociated: userMsgData.isErrorAssociated || false,
-        };
-        newMessages.push(userMessage);
-
-        if (modelMsgData) {
-          const modelContent = modelMsgData.content || modelMsgData;
-          const modelMessage: Message = {
-            id: modelMsgData.id || nanoid(),
-            responseTo: userMessage.id,
-            content: modelContent,
-            isErrorAssociated: modelMsgData.isErrorAssociated || false,
-          };
-          newMessages.push(modelMessage);
-        }
-      }
-      return { ...convo, messages: newMessages };
-    });
-
-    loadedState = { ...loadedState, conversations: migratedConversations };
-    return loadedState;
-
+    return JSON.parse(serializedState);
   } catch (e) {
     console.warn('Could not load chat history from local storage', e);
     return {};
