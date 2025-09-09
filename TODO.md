@@ -23,7 +23,8 @@ These tasks address issues in the current (v1.5) implementation and add smaller,
     3.  Update `geminiApiClient.ts` to accept the model name in its constructor or `generateContent` method.
     4.  Pass the selected model from the state to the API client when `generateContent` is called.
 
-- [ ] **Implement Chat Message Editing:**
+- [x] **Implement Chat Message Editing:**
+  - **Completed:** Implemented message selection (in pairs), deletion via a context menu with a confirmation dialog, and a "Resend" option for the last model message. The underlying data model was refactored to use an explicit `responseTo` property for robust message pairing.
   - **Goal:** Allow users to select, edit, and delete messages directly from the chat history.
   - **Requirements:**
     1.  **Selection:**

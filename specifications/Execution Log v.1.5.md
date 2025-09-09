@@ -56,3 +56,25 @@ This log tracks the key decisions and actions taken during the implementation of
     3.  The final, robust migration logic was implemented to ensure all legacy data is correctly and safely transformed into the current `Message` structure.
     4.  After verification, the temporary migration code was removed to finalize the implementation, leaving the loader clean.
 *   **Rationale:** This ensures full backward compatibility for all users, preventing application failures due to outdated or malformed data in their browser's local storage. It was a critical step to ensure a smooth user experience after the data model was updated.
+
+---
+
+### **2025-09-09**
+
+**Action: Implemented "Resend" Functionality**
+
+*   **Summary:**
+    1.  Created a new `regenerateLastResponse` async thunk in `chatThunks.ts` to handle the logic of resending a prompt.
+    2.  Added corresponding reducers to `chatSlice.ts` to manage the pending, fulfilled, and rejected states of the regeneration, ensuring the UI updates correctly by replacing the previous model response with the new one.
+    3.  The `MessageContextMenu.tsx` was updated to conditionally display a "Resend" option only on the last model message of a conversation.
+    4.  Added i18n keys for the "Resend" label.
+*   **Rationale:** This completes the requirements for the chat message editing feature, giving users the ability to easily retry a prompt if the model's previous response was unsatisfactory.
+
+---
+
+### **2025-09-09**
+
+**Action: Fixed Markdown Export Bug**
+
+*   **Summary:** Corrected a bug in the `formatToMarkdown` utility function in `exportUtils.ts`. The function was attempting to access properties on the `Message` object directly instead of the nested `content` object, causing an error after the data model was refactored.
+*   **Rationale:** This restores the Markdown export functionality, ensuring it is compatible with the current, correct data structure.

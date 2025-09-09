@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Message, toggleMessageSelection, selectSelectedMessageIds } from '../../state/chatSlice';
+import { Message, toggleMessageSelection, selectSelectedMessageIds, selectCurrentConversation } from '../../state/chatSlice';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useContextMenu } from '../../hooks/useContextMenu';
@@ -16,6 +16,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { menuState, openMenu, closeMenu } = useContextMenu();
+  const currentConversation = useAppSelector(selectCurrentConversation);
 
   const selectedMessageIds = useAppSelector(selectSelectedMessageIds);
   const isSelected = selectedMessageIds.includes(message.id);
@@ -80,9 +81,9 @@ export function ChatMessage({ message }: ChatMessageProps) {
         isOpen={menuState.isOpen}
         position={menuState.position}
         onClose={closeMenu}
-        messageId={message.id}
+        message={message}
+        conversation={currentConversation!}
       />
     </div>
   );
 }
-

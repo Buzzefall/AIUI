@@ -76,6 +76,79 @@ export const generateContent = createAsyncThunk<
     const result = await client.generateContent({
       history, // <-- Use filtered history
       latestUserMessage: userMessage.parts,
+      thinkingConfig: { includeThoughts: false, thinkingBudget: 32000 }
+    });
+
+    const text = result.text;
+
+    if (text === undefined) {
+      const finishReason = result.candidates?.[0]?.finishReason;
+      const errorMessage =
+        result.candidates?.[0]?.finishMessage ||
+        getTranslation(currentLocale, 'errors.unknownApiError');
+
+      return rejectWithValue({ userMessage, errorMessage, finishReason });
+    }
+
+    const modelResponse: Content = { role: 'model', parts: [{ text }] };
+
+    return { userMessage, modelResponse };
+  } catch (error: any) {
+    const errorMessage = error.message || getTranslation(currentLocale, 'errors.unknownApiError');
+    return rejectWithValue({ userMessage, errorMessage });
+  }
+});
+
+export const regenerateLastResponse = createAsyncThunk<
+  GenerateContentResult,
+  void, // No arguments needed
+  { state: RootState; rejectValue: RejectValue }
+>('chat/regenerateLastResponse', async (_, { getState, rejectWithValue }) => {
+  const state = getState();
+  const { settings } = state;
+  const currentLocale = selectCurrentLocale(state);
+  const currentConversation = selectCurrentConversation(state);
+  const troubleshootingMode = selectTroubleshootingMode(state);
+
+  if (!currentConversation || currentConversation.messages.length < 2) {
+    // Cannot regenerate if there's no history or only a user message
+    return rejectWithValue({ 
+      userMessage: { role: 'user', parts: [] }, 
+      errorMessage: 'Not enough messages to regenerate response.' 
+    });
+  }
+
+  // The last message is the model's, the one before is the user's
+  const lastModelMessage = currentConversation.messages[currentConversation.messages.length - 1];
+  const correspondingUserMessage = currentConversation.messages.find(m => m.id === lastModelMessage.responseTo);
+
+  if (!correspondingUserMessage) {
+    return rejectWithValue({ 
+      userMessage: { role: 'user', parts: [] }, 
+      errorMessage: 'Could not find the corresponding user message to regenerate.' 
+    });
+  }
+
+  const userMessage = correspondingUserMessage.content;
+
+  if (!settings.apiKey) {
+    const errorMessage = getTranslation(currentLocale, 'errors.apiKeyNotSet');
+    return rejectWithValue({ userMessage, errorMessage });
+  }
+
+  // History excludes the last model message
+  const history = troubleshootingMode
+    ? currentConversation.messages.slice(0, -1).map(m => m.content)
+    : currentConversation.messages
+        .slice(0, -1)
+        .filter(m => !m.isErrorAssociated)
+        .map(m => m.content);
+
+  try {
+    const client = new GeminiApiClient(settings.apiKey);
+    const result = await client.generateContent({
+      history,
+      latestUserMessage: userMessage.parts,
       thinkingConfig: { includeThoughts: false, thinkingBudget: 24576 }
     });
 
@@ -93,6 +166,7 @@ export const generateContent = createAsyncThunk<
     const modelResponse: Content = { role: 'model', parts: [{ text }] };
 
     return { userMessage, modelResponse };
+
   } catch (error: any) {
     const errorMessage = error.message || getTranslation(currentLocale, 'errors.unknownApiError');
     return rejectWithValue({ userMessage, errorMessage });

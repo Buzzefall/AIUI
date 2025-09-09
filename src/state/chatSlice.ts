@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import { Content } from '@google/genai';
-import { generateContent } from './chatThunks';
+import { generateContent, regenerateLastResponse } from './chatThunks';
 import type { RootState } from './store';
 
 // --- New Message Interface ---
@@ -235,6 +235,46 @@ export const chatSlice = createSlice({
           };
 
           currentConvo.messages.push(userMessageWithError, modelErrorMessage);
+        }
+        state.isLoading = false;
+        saveStateToLocalStorage(state);
+      })
+      .addCase(regenerateLastResponse.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(regenerateLastResponse.fulfilled, (state, action) => {
+        const currentConvo = state.conversations.find((c) => c.id === state.currentConversationId);
+        if (currentConvo) {
+          // Replace the last message (the old model response)
+          currentConvo.messages.pop();
+          const newModelMessage: Message = { 
+            id: nanoid(), 
+            responseTo: currentConvo.messages[currentConvo.messages.length - 1].id,
+            content: action.payload.modelResponse 
+          };
+          currentConvo.messages.push(newModelMessage);
+        }
+        state.isLoading = false;
+        saveStateToLocalStorage(state);
+      })
+      .addCase(regenerateLastResponse.rejected, (state, action) => {
+        const currentConvo = state.conversations.find((c) => c.id === state.currentConversationId);
+        if (currentConvo && action.payload) {
+          const { errorMessage, finishReason } = action.payload;
+          const errorText = `**Error:** ${errorMessage}${finishReason ? `\n**Reason:** ${finishReason}` : ''}`;
+          const errorContent: Content = {
+            role: 'model',
+            parts: [{ text: errorText }],
+          };
+          // Replace the last message with an error message
+          currentConvo.messages.pop();
+          const newErrorMessage: Message = { 
+            id: nanoid(), 
+            responseTo: currentConvo.messages[currentConvo.messages.length - 1].id,
+            content: errorContent, 
+            isErrorAssociated: true 
+          };
+          currentConvo.messages.push(newErrorMessage);
         }
         state.isLoading = false;
         saveStateToLocalStorage(state);

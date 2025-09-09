@@ -63,6 +63,7 @@
   },
   "contextMenu": {
     "delete": "Delete",
-    "deleteSelected": "Delete Selected"
+    "deleteSelected": "Delete Selected",
+    "resend": "Resend"
   }
 }

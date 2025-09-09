@@ -9,12 +9,12 @@ export function formatToMarkdown(conversation: Conversation): string {
   let markdown = `# ${conversation.title}\n\n`;
   
   conversation.messages.forEach(msg => {
-    const role = msg.role === 'user' ? 'You' : 'Gemini';
+    const role = msg.content.role === 'user' ? 'You' : 'Gemini';
     const msgHeader = `**${role}:**\n\n`;
     markdown += msgHeader;
     
     let msgBody: string = '';
-    msg.parts?.forEach(part => {
+    msg.content.parts?.forEach(part => {
       function parseMsgPart() {
         if (part.text) {
           return `${part.text}`;

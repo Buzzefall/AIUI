@@ -63,6 +63,7 @@
   },
   "contextMenu": {
     "delete": "Удалить",
-    "deleteSelected": "Удалить выбранное"
+    "deleteSelected": "Удалить выбранное",
+    "resend": "Отправить повторно"
   }
 }
