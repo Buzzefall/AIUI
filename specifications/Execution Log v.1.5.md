@@ -90,3 +90,12 @@ This log tracks the key decisions and actions taken during the implementation of
     2.  **API Error Fix:** Added filtering logic to the `geminiApiClient` to prevent invalid `Part` objects (with empty `inlineData`) from being sent to the `countTokens` API, resolving a runtime error.
     3.  **TypeScript Errors:** Corrected multiple type errors by providing the `dispatch` function to thunk arguments and ensuring `Part[]` arrays were handled correctly to prevent `undefined` values.
 *   **Rationale:** These fixes ensure the new features are robust, reliable, and type-safe, providing a stable foundation for future development.
+
+---
+
+### **2025-09-09**
+
+**Action: Fixed UI Layout Shift on Selection**
+
+*   **Summary:** Fixed a UI bug where selecting a message would cause a layout shift. A default, transparent border was added to the message bubble's base style, and the selection style was updated to only change the border color. 
+*   **Rationale:** This ensures that the element's box model does not change on selection, providing a stable and non-disruptive user experience.

@@ -48,15 +48,16 @@ export function ChatMessage({ message }: ChatMessageProps) {
   const userContainer = "flex-row-reverse";
   const modelContainer = "";
 
-  const userBubble = "bg-primary/10";
-  const modelBubble = "bg-slate-100";
+  const bgSelected = "bg-indigo-100";
+  const userBubble = isSelected ? bgSelected : "bg-primary/10";
+  const modelBubble = isSelected ? bgSelected : "bg-slate-100";
 
   // Avatar classes
   const userAvatar = "bg-slate-400";
   const modelAvatar = "bg-primary";
 
   const containerClasses = `${messageContainerBase} ${isModel ? modelContainer : userContainer}`;
-  const bubbleClasses = `${messageBubbleBase} ${isModel ? modelBubble : userBubble} ${isSelected ? styles.messageSelected : ''}`;
+  const bubbleClasses = `${messageBubbleBase} ${isModel ? modelBubble : userBubble} ${isSelected ? styles.messageSelected : 'border-2 border-transparent'}`;
   const avatarClasses = `flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${isModel ? modelAvatar : userAvatar}`;
   const avatarLetter = isModel ? 'G' : 'U';
 

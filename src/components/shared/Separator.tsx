@@ -4,7 +4,7 @@ interface SeparatorProps {
 }
 
 export function Separator({ orientation = 'horizontal', className: additionalClasses = ''}: SeparatorProps) {
-  const baseClasses = 'from-transparent via-slate-300 to-transparent';
+  const baseClasses = 'from-transparent via-slate-300 to-transparent shrink-0';
   const orientationClasses =
     orientation === 'vertical'
       ? 'w-px h-full bg-gradient-to-t' // Vertical gradient
