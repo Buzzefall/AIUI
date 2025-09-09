@@ -18,7 +18,7 @@ export function ResponsePanel() {
   }, [currentConversation?.messages, isLoading]);
 
   return (
-    <div className="flex-grow flex flex-col overflow-y-auto p-4">
+    <div className="flex-grow flex flex-col overflow-y-auto p-4 items-center">
       {currentConversation?.messages.map((msg) => (
         <ChatMessage key={msg.id} message={msg} />
       ))}
