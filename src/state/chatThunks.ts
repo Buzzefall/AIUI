@@ -5,8 +5,9 @@ import { GeminiApiClient } from '../api/gemini';
 
 import type { RootState } from './store';
 import { selectCurrentLocale } from './localeSlice';
-import { selectCurrentConversation, selectTroubleshootingMode } from './chatSlice'; // <-- Import selector
+import { selectCurrentConversation, selectTroubleshootingMode, deleteSelectedMessages } from './chatSlice'; // <-- Import selector
 import { getTranslation } from '../utils/getTranslation';
+import { updateTokenCountThunk } from './updateTokenCountThunk';
 
 
 interface GenerateContentArgs {
@@ -28,6 +29,8 @@ interface RejectValue {
   finishReason?: FinishReason;
 }
 
+const thinkingBudgetTokens = 32768;
+
 /**
  * An async thunk to generate content using the Gemini API.
  * It orchestrates the entire API call lifecycle, including fetching state,
@@ -37,13 +40,14 @@ export const generateContent = createAsyncThunk<
   GenerateContentResult,
   GenerateContentArgs,
   { state: RootState; rejectValue: RejectValue }
->('chat/generateContent', async ({ prompt, files }, { getState, rejectWithValue }) => {
+>('chat/generateContent', async ({ prompt, files }, { getState, rejectWithValue, dispatch }) => {
   const state = getState();
   const { settings } = state;
   const currentLocale = selectCurrentLocale(state);
   const currentConversation = selectCurrentConversation(state);
   const troubleshootingMode = selectTroubleshootingMode(state); // <-- Get mode
 
+  
   // For multimodal prompts, the order of parts is important.
   const latestUserMessageParts: Part[] = [];
   if (files) {
@@ -75,8 +79,8 @@ export const generateContent = createAsyncThunk<
     const client = new GeminiApiClient(settings.apiKey);
     const result = await client.generateContent({
       history, // <-- Use filtered history
-      latestUserMessage: userMessage.parts,
-      thinkingConfig: { includeThoughts: false, thinkingBudget: 32000 }
+      latestUserMessage: userMessage.parts || [],
+      thinkingConfig: { includeThoughts: false, thinkingBudget: thinkingBudgetTokens }
     });
 
     const text = result.text;
@@ -92,6 +96,7 @@ export const generateContent = createAsyncThunk<
 
     const modelResponse: Content = { role: 'model', parts: [{ text }] };
 
+    dispatch(updateTokenCountThunk({ conversationId: currentConversation.id }));
     return { userMessage, modelResponse };
   } catch (error: any) {
     const errorMessage = error.message || getTranslation(currentLocale, 'errors.unknownApiError');
@@ -103,7 +108,7 @@ export const regenerateLastResponse = createAsyncThunk<
   GenerateContentResult,
   void, // No arguments needed
   { state: RootState; rejectValue: RejectValue }
->('chat/regenerateLastResponse', async (_, { getState, rejectWithValue }) => {
+>('chat/regenerateLastResponse', async (_, { getState, rejectWithValue, dispatch }) => {
   const state = getState();
   const { settings } = state;
   const currentLocale = selectCurrentLocale(state);
@@ -148,8 +153,8 @@ export const regenerateLastResponse = createAsyncThunk<
     const client = new GeminiApiClient(settings.apiKey);
     const result = await client.generateContent({
       history,
-      latestUserMessage: userMessage.parts,
-      thinkingConfig: { includeThoughts: false, thinkingBudget: 24576 }
+      latestUserMessage: userMessage.parts || [],
+      thinkingConfig: { includeThoughts: false, thinkingBudget: thinkingBudgetTokens }
     });
 
     const text = result.text;
@@ -165,10 +170,25 @@ export const regenerateLastResponse = createAsyncThunk<
 
     const modelResponse: Content = { role: 'model', parts: [{ text }] };
 
+    dispatch(updateTokenCountThunk({ conversationId: currentConversation.id }));
     return { userMessage, modelResponse };
 
   } catch (error: any) {
     const errorMessage = error.message || getTranslation(currentLocale, 'errors.unknownApiError');
     return rejectWithValue({ userMessage, errorMessage });
+  }
+});
+
+
+export const deleteSelectedMessagesThunk = createAsyncThunk<
+  void, 
+  void, 
+  { state: RootState }
+>('chat/deleteSelectedMessages', async (_, { dispatch, getState }) => {
+  const state = getState();
+  const conversationId = state.chat.currentConversationId;
+  dispatch(deleteSelectedMessages());
+  if (conversationId) {
+    dispatch(updateTokenCountThunk({ conversationId }));
   }
 });

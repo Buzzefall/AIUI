@@ -56,10 +56,15 @@ export class GeminiApiClient {
    * @returns A promise that resolves with the token count result.
    */
   public async countTokens(history: Content[]): Promise<CountTokensResponse> {
-    // Following the pattern from the migration guide, `countTokens` should also be on the `models` service.
+    // Filter out parts with empty inlineData.data, which the API rejects.
+    const sanitizedHistory = history.map(content => ({
+      ...content,
+      parts: (content.parts || []).filter(part => !part.inlineData || (part.inlineData && part.inlineData.data))
+    }));
+
     return this.googleAi.models.countTokens({
       model: this.modelName,
-      contents: history,
+      contents: sanitizedHistory,
     });
   }
 }

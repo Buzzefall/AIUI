@@ -78,3 +78,15 @@ This log tracks the key decisions and actions taken during the implementation of
 
 *   **Summary:** Corrected a bug in the `formatToMarkdown` utility function in `exportUtils.ts`. The function was attempting to access properties on the `Message` object directly instead of the nested `content` object, causing an error after the data model was refactored.
 *   **Rationale:** This restores the Markdown export functionality, ensuring it is compatible with the current, correct data structure.
+
+---
+
+### **2025-09-09**
+
+**Action: Bug Fixes and Stability Improvements**
+
+*   **Summary:** Addressed several bugs identified during testing to improve feature stability and type safety.
+    1.  **Token Count Update:** Refactored the token count logic to be centralized in the async thunks (`generateContent`, `regenerateLastResponse`, `deleteSelectedMessagesThunk`). This ensures the token count is reliably updated after any action that modifies the chat history.
+    2.  **API Error Fix:** Added filtering logic to the `geminiApiClient` to prevent invalid `Part` objects (with empty `inlineData`) from being sent to the `countTokens` API, resolving a runtime error.
+    3.  **TypeScript Errors:** Corrected multiple type errors by providing the `dispatch` function to thunk arguments and ensuring `Part[]` arrays were handled correctly to prevent `undefined` values.
+*   **Rationale:** These fixes ensure the new features are robust, reliable, and type-safe, providing a stable foundation for future development.

@@ -7,14 +7,7 @@ import './TokenCountDisplay.css';
 
 export function TokenCountDisplay() {
   const { t } = useTranslation();
-  const dispatch = useAppDispatch();
   const currentConversation = useAppSelector(selectCurrentConversation);
-
-  useEffect(() => {
-    if (currentConversation && currentConversation.messages.length > 0 && !currentConversation.totalTokens) {
-      dispatch(updateTokenCountThunk({ conversationId: currentConversation.id }));
-    }
-  }, [currentConversation, dispatch]);
 
   if (!currentConversation) {
     return null;

@@ -33,8 +33,7 @@ export const MessageContextMenu: React.FC<MessageContextMenuProps> = ({ isOpen, 
   };
 
   const handleConfirmDelete = () => {
-    dispatch(deleteSelectedMessages());
-    dispatch(clearMessageSelection());
+    dispatch(deleteSelectedMessagesThunk());
     setIsConfirmOpen(false);
   };
 
