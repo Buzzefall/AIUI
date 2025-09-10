@@ -26,9 +26,9 @@
 .prompting-panel__textarea-container .CodeMirror {
   border: 1px solid #d1d5db; /* slate-300 */
   border-radius: var(--border-radius);
-  font-size: 1.05rem;
-  line-height: 1.5rem;
-  padding: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding: 0.35rem;
 }
 
 .prompting-panel__textarea-container .CodeMirror-scroll {
