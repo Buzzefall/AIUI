@@ -114,6 +114,18 @@ export const FileUploadManager = forwardRef<FileUploadManagerRef, FileUploadMana
 
   return (
     <>
+      <input ref={fileInputRef} id="file-upload" name="file-upload" type="file" className="prompting-panel__file-upload" onChange={handleFileChange} disabled={isLoading} multiple />
+      <div
+        className={`prompting-panel__dropzone ${isDragging ? 'prompting-panel__dropzone--dragging' : ''}`}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <PlusIcon className="prompting-panel__remove-all-icon" />
+        <p className="prompting-panel__dropzone-text">{t('promptingPanel.dropzone')}</p>
+      </div>
+
       {managedFiles.length > 0 && (
         <div className="prompting-panel__file-preview-grid">
           <div className="prompting-panel__remove-all-container">
@@ -138,18 +150,6 @@ export const FileUploadManager = forwardRef<FileUploadManagerRef, FileUploadMana
       {fileErrors.map((error, index) => (
         <p key={index} className="prompting-panel__error">{error}</p>
       ))}
-
-      <input ref={fileInputRef} id="file-upload" name="file-upload" type="file" className="prompting-panel__file-upload" onChange={handleFileChange} disabled={isLoading} multiple />
-      <div
-        className={`prompting-panel__dropzone ${isDragging ? 'prompting-panel__dropzone--dragging' : ''}`}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onClick={() => fileInputRef.current?.click()}
-      >
-        <PlusIcon className="prompting-panel__remove-all-icon" />
-        <p className="prompting-panel__dropzone-text">{t('promptingPanel.dropzone')}</p>
-      </div>
     </>
   );
 });
