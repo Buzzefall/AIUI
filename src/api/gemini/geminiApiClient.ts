@@ -6,6 +6,7 @@ import {
   Content,
 } from '@google/genai';
 import { GeminiRequest } from './types';
+import { Conversation } from '../../state/chatSlice';
 
 /**
  * A client for interacting with the Google Gemini API.
@@ -52,14 +53,14 @@ export class GeminiApiClient {
   /**
    * Counts the number of tokens in the conversation history.
    *
-   * @param history The conversation history to count tokens for.
+   * @param conversation The conversation history to count tokens for.
    * @returns A promise that resolves with the token count result.
    */
-  public async countTokens(history: Content[]): Promise<CountTokensResponse> {
+  public async countTokens(conversation: Conversation['messages']): Promise<CountTokensResponse> {
     // Filter out parts with empty inlineData.data, which the API rejects.
-    const sanitizedHistory = history.map(content => ({
-      ...content,
-      parts: (content.parts || []).filter(part => !part.inlineData || (part.inlineData && part.inlineData.data))
+    const sanitizedHistory = conversation.map(message => ({
+      ...message.content,
+      parts: (message.content.parts || []).filter(part => !part.inlineData || (part.inlineData && part.inlineData.data))
     }));
 
     return this.googleAi.models.countTokens({
