@@ -41,8 +41,8 @@ export function ChatMessage({ message }: ChatMessageProps) {
   };
 
   // Base classes
-  const messageContainerBase = "group flex items-start gap-4 my-4 cursor-pointer max-w-[66%]"; // Added cursor-pointer
-  const messageBubbleBase = "relative p-4 rounded-lg max-w-[60%] overflow-auto flex flex-col";
+  const messageContainerBase = "group flex items-start gap-4 my-4 cursor-pointer max-w-[100%]";
+  const messageBubbleBase = "relative p-2 rounded-lg overflow-auto flex flex-col max-w-[100%]";
 
   // Role-specific classes
   const userContainer = "flex-row-reverse";

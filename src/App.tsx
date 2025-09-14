@@ -19,10 +19,16 @@ function App() {
     }
   }, [currentConversationId, dispatch, t]);
 
+  const containerClasses = "h-screen max-w-[90vw] max-h-[95vh] ";
+  const borderClasses = "border-slate-300 shadow-lg shadow-slate-200 border rounded-lg p-1";
+  const textClasses = "font-sans text-slate-800";
+
   return (
-    <Panel orientation="vertical" className="h-screen font-sans text-slate-800">
-      <ConversationPanel />
-    </Panel>
+    <div className="h-screen flex items-center justify-center">
+      <Panel orientation="vertical" className={`w-fit ${containerClasses} ${borderClasses} ${textClasses}`}>
+        <ConversationPanel />
+      </Panel>
+    </div>
   );
 }
 

@@ -5,7 +5,7 @@ import { ControlPanel } from './ControlPanel/ControlPanel';
 
 export function ConversationPanel() {
   return (
-    <Panel orientation="horizontal" className="w-full bg-white p-4 flex flex-grow min-h-0 overflow-hidden">
+    <Panel orientation="horizontal" className="bg-white min-h-0 overflow-hidden">
       <ControlPanel />
       <Separator orientation="vertical" />
       <DialoguePanel />

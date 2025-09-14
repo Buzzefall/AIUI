@@ -17,8 +17,12 @@ export function ResponsePanel() {
     scrollToBottom();
   }, [currentConversation?.messages, isLoading]);
 
+
+  const msgMessageWidth = '85ch'; // TailwindCSS maxWidth: '65ch' + 20 (to take paddings into account)
+  const msgListStyle = { maxWidth: msgMessageWidth, padding: '4rem' };
+
   return (
-    <div className="flex-grow flex flex-col overflow-y-auto p-4 items-center">
+    <div className="flex-grow flex flex-col overflow-y-auto p-4 mx-auto" style={msgListStyle}>  
       {currentConversation?.messages.map((msg) => (
         <ChatMessage key={msg.id} message={msg} />
       ))}
