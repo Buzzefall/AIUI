@@ -18,7 +18,7 @@ export function ResponsePanel() {
   }, [currentConversation?.messages, isLoading]);
 
 
-  const msgMessageWidth = '85ch'; // TailwindCSS maxWidth: '65ch' + 20 (to take paddings into account)
+  const msgMessageWidth = '85ch'; // TailwindCSS width: '65ch' + 20 (to take paddings into account)
   const msgListStyle = { width: msgMessageWidth, padding: '4rem' };
 
   return (
