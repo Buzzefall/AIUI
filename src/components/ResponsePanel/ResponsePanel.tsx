@@ -19,7 +19,7 @@ export function ResponsePanel() {
 
 
   const msgMessageWidth = '85ch'; // TailwindCSS maxWidth: '65ch' + 20 (to take paddings into account)
-  const msgListStyle = { maxWidth: msgMessageWidth, padding: '4rem' };
+  const msgListStyle = { width: msgMessageWidth, padding: '4rem' };
 
   return (
     <div className="flex-grow flex flex-col overflow-y-auto p-4 mx-auto" style={msgListStyle}>  
