@@ -1,12 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { useAppSelector } from '../../state/hooks';
-import { selectCurrentConversation, selectIsLoading } from '../../state/chatSlice';
+import { selectCurrentConversation, selectIsLoading, selectSelectedMessageIds } from '../../state/chatSlice';
 import { LoadingSpinner } from './LoadingSpinner';
 import { ChatMessage } from './ChatMessage';
 
 export function ResponsePanel() {
   const currentConversation = useAppSelector(selectCurrentConversation);
   const isLoading = useAppSelector(selectIsLoading);
+  const selectedMessageIds = useAppSelector(selectSelectedMessageIds); // Select selectedMessageIds here
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -24,7 +25,7 @@ export function ResponsePanel() {
   return (
     <div className="flex-grow flex flex-col overflow-y-auto p-4 mx-auto" style={msgListStyle}>  
       {currentConversation?.messages.map((msg) => (
-        <ChatMessage key={msg.id} message={msg} />
+        <ChatMessage key={msg.id} message={msg} isSelected={selectedMessageIds.includes(msg.id)} /> // Pass isSelected prop
       ))}
 
       {isLoading && (

@@ -143,8 +143,8 @@ export const chatSlice = createSlice({
       saveStateToLocalStorage(state);
     },
 
-    toggleMessageSelection: (state, action: PayloadAction<{ messageId: string }>) => {
-      const { messageId } = action.payload;
+    toggleMessageSelection: (state, action: PayloadAction<{ messageId: string; clearOthers?: boolean }>) => {
+      const { messageId, clearOthers } = action.payload;
       const conversation = state.conversations.find(c => c.id === state.currentConversationId);
       if (!conversation) return;
 
@@ -162,6 +162,11 @@ export const chatSlice = createSlice({
       const messagePairIds = [messageId];
       if (partnerId) {
         messagePairIds.push(partnerId);
+      }
+
+      // If clearOthers is true, clear all existing selections first
+      if (clearOthers) {
+        state.selectedMessageIds = [];
       }
 
       const areBothSelected = messagePairIds.every(id => state.selectedMessageIds.includes(id));
@@ -184,6 +189,18 @@ export const chatSlice = createSlice({
 
     clearMessageSelection: (state) => {
       state.selectedMessageIds = [];
+    },
+
+    updateMessageContent: (state, action: PayloadAction<{ messageId: string; newContent: Content }>) => {
+      const { messageId, newContent } = action.payload;
+      const conversation = state.conversations.find(c => c.id === state.currentConversationId);
+      if (conversation) {
+        const message = conversation.messages.find(m => m.id === messageId);
+        if (message) {
+          message.content = newContent;
+          saveStateToLocalStorage(state);
+        }
+      }
     },
   },
 
@@ -293,6 +310,7 @@ export const {
   toggleMessageSelection,
   deleteSelectedMessages,
   clearMessageSelection,
+  updateMessageContent,
 } = chatSlice.actions;
 
 // Selectors

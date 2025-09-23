@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Message, toggleMessageSelection, selectSelectedMessageIds, selectCurrentConversation } from '../../state/chatSlice';
+import { useState, memo } from 'react';
+import { Message, toggleMessageSelection, selectCurrentConversation, selectSelectedMessageIds } from '../../state/chatSlice';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useContextMenu } from '../../hooks/useContextMenu';
@@ -10,16 +10,15 @@ import styles from './ChatMessage.module.css';
 
 interface ChatMessageProps {
   message: Message;
+  isSelected: boolean; // Add isSelected to props
 }
 
-export function ChatMessage({ message }: ChatMessageProps) {
+export const ChatMessage = memo(({ message, isSelected }: ChatMessageProps) => { // Wrap in memo and destructure isSelected
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { menuState, openMenu, closeMenu } = useContextMenu();
   const currentConversation = useAppSelector(selectCurrentConversation);
-
-  const selectedMessageIds = useAppSelector(selectSelectedMessageIds);
-  const isSelected = selectedMessageIds.includes(message.id);
+  const selectedMessageIds = useAppSelector(selectSelectedMessageIds); // Get selected message IDs
 
   const [copied, setCopied] = useState(false);
   
@@ -36,10 +35,21 @@ export function ChatMessage({ message }: ChatMessageProps) {
     });
   };
 
-  const handleContainerClick = () => {
+  const handleContainerClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    // Prevent deep event propagation causing UI stuttering, ruining CSS transition animations and activation of unintended handlers
+    e.stopPropagation();
+
     dispatch(toggleMessageSelection({ messageId: message.id }));
   };
 
+  const handleContextMenu = (e: React.MouseEvent) => {
+    if (!selectedMessageIds.includes(message.id)) {
+      // If the right-clicked message is not part of the current selection,
+      // clear existing selections and select only this message.
+      dispatch(toggleMessageSelection({ messageId: message.id, clearOthers: true }));
+    }
+    openMenu(e); // Open the context menu
+  };
   // Base classes
   const messageContainerBase = "group flex items-start gap-4 my-4 cursor-pointer max-w-[100%]";
   const messageBubbleBase = "relative p-2 rounded-lg overflow-auto flex flex-col max-w-[100%]";
@@ -62,7 +72,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
   const avatarLetter = isModel ? 'G' : 'U';
 
   return (
-    <div className={containerClasses} onClick={handleContainerClick} onContextMenu={openMenu}>
+    <div className={containerClasses} onClick={handleContainerClick} onContextMenu={handleContextMenu}>
       <div className={avatarClasses}>
         {avatarLetter}
       </div>
@@ -87,4 +97,4 @@ export function ChatMessage({ message }: ChatMessageProps) {
       />
     </div>
   );
-}
+})
