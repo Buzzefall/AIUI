@@ -161,3 +161,8 @@
     padding: 0;
     margin: 0;
 }
+
+.previewMarkdown {
+  padding: 0;
+  background-color: transparent;
+}
