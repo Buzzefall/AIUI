@@ -1,0 +1,28 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Vite Dev Server",
+      "type": "npm",
+      "script": "dev",
+      "isBackground": true,
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": {
+          "regexp": "^.*VITE.*ready in.*ms.*$",
+          "file": 1,
+          "location": 2
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*VITE.*$",
+          "endsPattern": "^.*Local:.*http://localhost:.*$"
+        }
+      }
+    }
+  ]
+}
