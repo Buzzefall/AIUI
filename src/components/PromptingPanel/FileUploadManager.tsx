@@ -1,6 +1,7 @@
 import React, { useState, useRef, useImperativeHandle, forwardRef, useCallback } from 'react';
 import { useTranslation } from '../../hooks/useTranslation';
 import { PlusIcon, FileIcon } from '../shared/Icons';
+import { determineMimeType } from '../../utils/mimeTypeUtils';
 
 // Define and export the ManagedFile type for reusability
 export interface ManagedFile {
@@ -51,7 +52,7 @@ export const FileUploadManager = forwardRef<FileUploadManagerRef, FileUploadMana
         reader.onload = () => {
           resolve({
             file,
-            mimeType: file.type,
+            mimeType: file.type == '' ? determineMimeType(file) : file.type,
             base64: (reader.result as string).split(',')[1],
           });
         };
