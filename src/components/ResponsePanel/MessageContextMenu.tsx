@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { ContextMenu } from '../shared/ContextMenu/ContextMenu';
 import { MenuItem } from '../shared/ContextMenu/MenuItem';
 import { useAppDispatch, useAppSelector } from '../../state/hooks';
-import { deleteSelectedMessages, clearMessageSelection, selectSelectedMessageIds, Conversation, Message } from '../../state/chatSlice';
-import { regenerateLastResponse } from '../../state/chatThunks';
+import { selectSelectedMessageIds, Conversation, Message } from '../../state/chatSlice';
+import { deleteSelectedMessagesThunk, regenerateLastResponse } from '../../state/chatThunks';
 import { useTranslation } from '../../hooks/useTranslation';
 import { ConfirmationDialog } from '../shared/ConfirmationDialog';
 
@@ -22,6 +22,7 @@ export const MessageContextMenu: React.FC<MessageContextMenuProps> = ({ isOpen, 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const hasSelection = selectedMessageIds.length > 0;
+  // const firstSelectedId = selectedMessageIds[0];
   const itemsToDelete = hasSelection ? selectedMessageIds.length / 2 : 1;
   const confirmMessage = `Are you sure you want to delete ${itemsToDelete} message pair(s)? This action cannot be undone.`
 
@@ -36,6 +37,11 @@ export const MessageContextMenu: React.FC<MessageContextMenuProps> = ({ isOpen, 
     dispatch(deleteSelectedMessagesThunk());
     setIsConfirmOpen(false);
   };
+  
+  // const handleConfirmUpdate = () => {
+  //   dispatch(updateMessageContentThunk());
+  //   setIsConfirmOpen(false);
+  // };
 
   const handleResend = () => {
     dispatch(regenerateLastResponse());
@@ -51,12 +57,12 @@ export const MessageContextMenu: React.FC<MessageContextMenuProps> = ({ isOpen, 
           onClick={handleDeleteClick} 
         />
       </ContextMenu>
-      <ConfirmationDialog
+      <ConfirmationDialog // for different types of confirmations the text must be different (edit, delete, etc.). and handler as well
         isOpen={isConfirmOpen}
         onClose={() => setIsConfirmOpen(false)}
         onConfirm={handleConfirmDelete}
         title="Confirm Deletion"
-        message={confirmMessage}
+        message={confirmMessage} 
       />
     </>
   );
