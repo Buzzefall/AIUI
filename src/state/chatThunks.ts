@@ -5,7 +5,12 @@ import { GeminiApiClient } from '../api/gemini';
 
 import type { RootState } from './store';
 import { selectCurrentLocale } from './localeSlice';
-import { selectCurrentConversation, selectTroubleshootingMode, deleteSelectedMessages } from './chatSlice'; // <-- Import selector
+import { 
+  selectCurrentConversation, 
+  selectTroubleshootingMode, 
+  deleteSelectedMessages, 
+  updateMessageContent 
+} from './chatSlice'; // <-- Import selector
 import { getTranslation } from '../utils/getTranslation';
 import { updateTokenCountThunk } from './updateTokenCountThunk';
 
@@ -191,4 +196,29 @@ export const deleteSelectedMessagesThunk = createAsyncThunk<
   if (conversationId) {
     dispatch(updateTokenCountThunk({ conversationId }));
   }
+});
+
+export const updateMessageContentThunk = createAsyncThunk<
+  void, 
+  void, 
+  { state: RootState }
+>('chat/deleteSelectedMessages', async (_, { dispatch, getState }) => {
+  const state = getState();
+  
+  const conversationId = state.chat.currentConversationId;
+  const conversation = state.chat.conversations.find(c => c.id === conversationId);
+  const messages = conversation?.messages;
+  
+  if (!messages || messages.length === 0) {
+    throw new Error('No messages found in the conversation.');
+  }
+
+  const messageId = state.chat.selectedMessageIds[0];
+  const selectedMessage = messages?.find(m => m.id === messageId);
+  
+  if (!selectedMessage?.content) {
+    throw new Error('Selected message has no content.');
+  }
+
+  dispatch(updateMessageContent({ messageId, newContent: selectedMessage.content }));
 });
